@@ -1,0 +1,11 @@
+{
+  "hash": "4bf31030b69b87c643e4a3c84dbea706",
+  "result": {
+    "markdown": "---\ntitle: Intro to Pyspark\nauthor: Scott Wied\ndate: 11/03/2022\nformat:\n  html:\n    code-fold: false\n---\n\n# Intro to Pyspark\n\n::: {.cell execution_count=1}\n``` {.python .cell-code}\n1+1\n```\n\n::: {.cell-output .cell-output-display execution_count=1}\n```\n2\n```\n:::\n:::\n\n\n",
+    "supporting": [
+      "Intro-to-Pyspark_files"
+    ],
+    "filters": [],
+    "includes": {}
+  }
+}
