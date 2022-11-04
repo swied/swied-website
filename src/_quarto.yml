@@ -10,6 +10,9 @@ website:
       - about.qmd
       - icon: linkedin
         href: https://www.linkedin.com/in/scottwied
+  comments:
+    giscus:
+      repo: swied/swied-website
 format:
   html:
     theme: flatly
