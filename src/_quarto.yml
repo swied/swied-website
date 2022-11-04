@@ -4,13 +4,12 @@ project:
 
 website:
   title: "Scott Wied's Data Science Blog"
+  google-analytics: "G-ZZ12P3MMWN"
   navbar:
     right:
       - about.qmd
-      - icon: github
-        href: https://github.com/
-      - icon: twitter
-        href: https://twitter.com
+      - icon: linkedin
+        href: https://www.linkedin.com/in/scottwied
 format:
   html:
     theme: flatly
