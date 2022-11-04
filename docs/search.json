@@ -4,7 +4,7 @@
     "href": "index.html",
     "title": "My Data Science Blog",
     "section": "",
-    "text": "Intro to Pyspark\n\n\n\n\n\n\n\n\n\n\n\n\nNov 3, 2022\n\n\nScott Wied\n\n\n\n\n\n\n  \n\n\n\n\nPost With Code\n\n\n\n\n\n\n\nnews\n\n\ncode\n\n\nanalysis\n\n\n\n\n\n\n\n\n\n\n\nNov 3, 2022\n\n\nHarlow Malloc\n\n\n\n\n\n\n  \n\n\n\n\nWelcome To My Blog\n\n\n\n\n\n\n\nnews\n\n\n\n\n\n\n\n\n\n\n\nOct 31, 2022\n\n\nTristan O’Malley\n\n\n\n\n\n\nNo matching items"
+    "text": "Intro to Pyspark\n\n\n\n\n\n\nScott Wied\n\n\nNov 3, 2022\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nPost With Code\n\n\n\nnews\n\n\ncode\n\n\nanalysis\n\n\n\n\n\n\n\nHarlow Malloc\n\n\nNov 3, 2022\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nWelcome To My Blog\n\n\n\nnews\n\n\n\n\n\n\n\nTristan O’Malley\n\n\nOct 31, 2022\n\n\n\n\n\n\n\n\nNo matching items"
   },
   {
     "objectID": "about.html",
@@ -18,7 +18,7 @@
     "href": "posts/intro-to-pyspark/Intro-to-Pyspark.html",
     "title": "Intro to Pyspark",
     "section": "",
-    "text": "Intro to Pyspark\n\nimport pandas as pd\nimport numpy as np\n\n\nfrom pyspark.sql import SparkSession\nspark = SparkSession.builder.getOrCreate()\n\n\nimport pyspark.sql.types as T\nimport pyspark.sql.functions as F\n\n\npdf = pd.DataFrame({'x':[1,2,3], 'y':[5,6,7]})\npdf.to_csv('test.csv')\npdf.head()\n\n\n\n\n\n  \n    \n      \n      x\n      y\n    \n  \n  \n    \n      0\n      1\n      5\n    \n    \n      1\n      2\n      6\n    \n    \n      2\n      3\n      7\n    \n  \n\n\n\n\n\nspark.sql(\"select 1+1\").show()\n\n+-------+\n|(1 + 1)|\n+-------+\n|      2|\n+-------+"
+    "text": "import pandas as pd\nimport numpy as np\n\n\nfrom pyspark.sql import SparkSession\nspark = SparkSession.builder.getOrCreate()\n\n\nimport pyspark.sql.types as T\nimport pyspark.sql.functions as F\n\n\n\n\npdf = pd.DataFrame({'x':[1,2,3], 'y':[5,6,7]})\npdf.to_csv('test.csv')\npdf.head()\n\n\n\n\n\n  \n    \n      \n      x\n      y\n    \n  \n  \n    \n      0\n      1\n      5\n    \n    \n      1\n      2\n      6\n    \n    \n      2\n      3\n      7\n    \n  \n\n\n\n\n\n\n\n\nspark.sql(\"select 1+1\").show()\n\n+-------+\n|(1 + 1)|\n+-------+\n|      2|\n+-------+\n\n\n\n\n\n\n1+1\n\n2"
   },
   {
     "objectID": "posts/post-with-code/index.html",
