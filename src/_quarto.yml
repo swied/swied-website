@@ -3,16 +3,20 @@ project:
   output-dir: ../docs
 
 website:
-  title: "Scott Wied's Data Science Blog"
+  title: "Scott's Data Science Blog"
+  site-url: htts://www.swied.com
   google-analytics: "G-ZZ12P3MMWN"
   navbar:
     right:
       - about.qmd
-      - icon: linkedin
-        href: https://www.linkedin.com/in/scottwied
+      - icon: rss
+        href: index.xml
   comments:
     giscus:
       repo: swied/swied-website
+listing:
+  contents: posts
+  feed: true
 format:
   html:
     theme: flatly
