@@ -12,6 +12,35 @@
 <generator>quarto-1.2.258</generator>
 <lastBuildDate>Thu, 03 Nov 2022 07:00:00 GMT</lastBuildDate>
 <item>
+  <title>Post With Code</title>
+  <dc:creator>Harlow Malloc</dc:creator>
+  <link>htts://www.swied.com/posts/post-with-code/index.html</link>
+  <description><![CDATA[ 
+
+
+
+
+<p>This is a post with executable code.</p>
+
+
+
+
+<div class="quarto-listing quarto-listing-container-default" id="listing-listing">
+<div class="list quarto-listing-default">
+
+</div>
+<div class="listing-no-matching d-none">
+No matching items
+</div>
+</div> ]]></description>
+  <category>news</category>
+  <category>code</category>
+  <category>analysis</category>
+  <guid>htts://www.swied.com/posts/post-with-code/index.html</guid>
+  <pubDate>Thu, 03 Nov 2022 07:00:00 GMT</pubDate>
+  <media:content url="htts://www.swied.com/posts/post-with-code/image.jpg" medium="image" type="image/jpeg"/>
+</item>
+<item>
   <title>Intro to Pyspark</title>
   <dc:creator>Scott Wied</dc:creator>
   <link>htts://www.swied.com/posts/intro-to-pyspark/Intro-to-Pyspark.html</link>
@@ -112,35 +141,6 @@ No matching items
 </div> ]]></description>
   <guid>htts://www.swied.com/posts/intro-to-pyspark/Intro-to-Pyspark.html</guid>
   <pubDate>Thu, 03 Nov 2022 07:00:00 GMT</pubDate>
-</item>
-<item>
-  <title>Post With Code</title>
-  <dc:creator>Harlow Malloc</dc:creator>
-  <link>htts://www.swied.com/posts/post-with-code/index.html</link>
-  <description><![CDATA[ 
-
-
-
-
-<p>This is a post with executable code.</p>
-
-
-
-
-<div class="quarto-listing quarto-listing-container-default" id="listing-listing">
-<div class="list quarto-listing-default">
-
-</div>
-<div class="listing-no-matching d-none">
-No matching items
-</div>
-</div> ]]></description>
-  <category>news</category>
-  <category>code</category>
-  <category>analysis</category>
-  <guid>htts://www.swied.com/posts/post-with-code/index.html</guid>
-  <pubDate>Thu, 03 Nov 2022 07:00:00 GMT</pubDate>
-  <media:content url="htts://www.swied.com/posts/post-with-code/image.jpg" medium="image" type="image/jpeg"/>
 </item>
 <item>
   <title>Welcome To My Blog</title>

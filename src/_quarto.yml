@@ -9,11 +9,6 @@ website:
   navbar:
     right:
       - about.qmd
-      - icon: rss
-        href: index.xml
-  comments:
-    giscus:
-      repo: swied/swied-website
 listing:
   contents: posts
   feed: true
