@@ -1,0 +1,11 @@
+{
+  "hash": "55fc94c512ad75ee2a7e7b05ec9e3601",
+  "result": {
+    "markdown": "---\ntitle: Post Title\ndate: MM/DD/20YY\ncategories:\n  - news\n  - code\n  - analysis\nimage: image.jpg\nformat:\n  html:\n    code-fold: false\n    smooth-scroll: true\nnumber-sections: true\ntoc: true\ntoc-location: left\ncode-line-numbers: true\nexecute:\n  warning: false\n---\n\n::: {.panel-tabset}\n# tab 1\n```\nhello world\n```\n# tab 2\n# tab 3\n:::\n:::: \n\n",
+    "supporting": [
+      "test_files"
+    ],
+    "filters": [],
+    "includes": {}
+  }
+}

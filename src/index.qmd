@@ -1,9 +1,9 @@
 ---
-title: "Scott's Data Science Blog"
+title: ""
 listing:
   contents: posts
   sort: "date desc"
-  type: grid
+  type: default
   categories: true
   sort-ui: false
   filter-ui: false
@@ -11,4 +11,14 @@ page-layout: full
 title-block-banner: false
 ---
 
+> Hi,
+>
+> Thanks for visiting my blog!  I decided to start writing these articles in order to share with others how I do Data Science.  It is also meant to demonstrate my skill set to prospective employers.  I am currently looking for a new job.  Please visit [my profile on LinkedIn](https://www.linkedin.com/in/scottwied/) to learn more about me.
+>
+> I hope you enjoy [swied.com](https://www.swied.com).
+>
+> Thanks,
+>
+> Scott
 
+# Articles

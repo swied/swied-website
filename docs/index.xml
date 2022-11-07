@@ -10,66 +10,106 @@
 <atom:link href="htts://www.swied.com/index.xml" rel="self" type="application/rss+xml"/>
 <description></description>
 <generator>quarto-1.2.258</generator>
-<lastBuildDate>Thu, 03 Nov 2022 07:00:00 GMT</lastBuildDate>
+<lastBuildDate>Sun, 06 Nov 2022 07:00:00 GMT</lastBuildDate>
 <item>
-  <title>Post With Code</title>
-  <dc:creator>Harlow Malloc</dc:creator>
-  <link>htts://www.swied.com/posts/post-with-code/index.html</link>
-  <description><![CDATA[ 
-
-
-
-
-<p>This is a post with executable code.</p>
-
-
-
-
-<div class="quarto-listing quarto-listing-container-default" id="listing-listing">
-<div class="list quarto-listing-default">
-
-</div>
-<div class="listing-no-matching d-none">
-No matching items
-</div>
-</div> ]]></description>
-  <category>news</category>
-  <category>code</category>
-  <category>analysis</category>
-  <guid>htts://www.swied.com/posts/post-with-code/index.html</guid>
-  <pubDate>Thu, 03 Nov 2022 07:00:00 GMT</pubDate>
-  <media:content url="htts://www.swied.com/posts/post-with-code/image.jpg" medium="image" type="image/jpeg"/>
-</item>
-<item>
-  <title>Intro to Pyspark</title>
+  <title>Get Financial Data by Stock Ticker From the data.sec.gov API</title>
   <dc:creator>Scott Wied</dc:creator>
-  <link>htts://www.swied.com/posts/intro-to-pyspark/Intro-to-Pyspark.html</link>
+  <link>htts://www.swied.com/posts/stock_ticker_data/stock_ticker_data.html</link>
   <description><![CDATA[ 
 
 
 
 
-<section id="intro-to-pyspark" class="level1" data-number="1">
-<h1 data-number="1"><span class="header-section-number">1</span> Intro to Pyspark</h1>
+<div class="column-page-right">
+<section id="import-python-packages" class="level2" data-number="1">
+<h2 data-number="1" class="anchored" data-anchor-id="import-python-packages"><span class="header-section-number">1</span> Import python packages</h2>
 <div class="cell" data-execution_count="1">
-<div class="sourceCode cell-code" id="cb1" style="background: #f1f3f5;"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb1-1"><span class="im" style="color: #00769E;">import</span> pandas <span class="im" style="color: #00769E;">as</span> pd</span>
-<span id="cb1-2"><span class="im" style="color: #00769E;">import</span> numpy <span class="im" style="color: #00769E;">as</span> np</span></code></pre></div>
+<div class="sourceCode cell-code" id="cb1" style="background: #f1f3f5;"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb1-1"><span class="im" style="color: #00769E;">import</span> requests</span>
+<span id="cb1-2"><span class="im" style="color: #00769E;">import</span> json</span>
+<span id="cb1-3"><span class="im" style="color: #00769E;">from</span> pprint <span class="im" style="color: #00769E;">import</span> pprint</span>
+<span id="cb1-4"><span class="im" style="color: #00769E;">import</span> pandas <span class="im" style="color: #00769E;">as</span> pd</span>
+<span id="cb1-5"><span class="im" style="color: #00769E;">import</span> numpy <span class="im" style="color: #00769E;">as</span> np</span>
+<span id="cb1-6"><span class="im" style="color: #00769E;">import</span> re</span>
+<span id="cb1-7"><span class="im" style="color: #00769E;">import</span> matplotlib.pyplot <span class="im" style="color: #00769E;">as</span> plt</span></code></pre></div>
 </div>
+</section>
+<section id="parameters" class="level2" data-number="2">
+<h2 data-number="2" class="anchored" data-anchor-id="parameters"><span class="header-section-number">2</span> Parameters</h2>
 <div class="cell" data-execution_count="2">
-<div class="sourceCode cell-code" id="cb2" style="background: #f1f3f5;"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb2-1"><span class="im" style="color: #00769E;">from</span> pyspark.sql <span class="im" style="color: #00769E;">import</span> SparkSession</span>
-<span id="cb2-2">spark <span class="op" style="color: #5E5E5E;">=</span> SparkSession.builder.getOrCreate()</span></code></pre></div>
+<div class="sourceCode cell-code" id="cb2" style="background: #f1f3f5;"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb2-1"><span class="co" style="color: #5E5E5E;"># Which company do you wish to track?</span></span>
+<span id="cb2-2">ticker <span class="op" style="color: #5E5E5E;">=</span> <span class="st" style="color: #20794D;">'AAPL'</span></span>
+<span id="cb2-3"></span>
+<span id="cb2-4"><span class="co" style="color: #5E5E5E;"># An email address needs to be included in the URL of the API call</span></span>
+<span id="cb2-5">email_address <span class="op" style="color: #5E5E5E;">=</span> <span class="st" style="color: #20794D;">'your-email@example.com'</span>  </span></code></pre></div>
 </div>
+</section>
+<section id="find-the-cik-number-for-the-chosen-stock-ticker" class="level2" data-number="3">
+<h2 data-number="3" class="anchored" data-anchor-id="find-the-cik-number-for-the-chosen-stock-ticker"><span class="header-section-number">3</span> Find the CIK number for the chosen stock ticker</h2>
+<section id="request-ticker-exchange-data-from-the-sec.gov-api" class="level3" data-number="3.1">
+<h3 data-number="3.1" class="anchored" data-anchor-id="request-ticker-exchange-data-from-the-sec.gov-api"><span class="header-section-number">3.1</span> Request ticker exchange data from the sec.gov API</h3>
 <div class="cell" data-execution_count="3">
-<div class="sourceCode cell-code" id="cb3" style="background: #f1f3f5;"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb3-1"><span class="im" style="color: #00769E;">import</span> pyspark.sql.types <span class="im" style="color: #00769E;">as</span> T</span>
-<span id="cb3-2"><span class="im" style="color: #00769E;">import</span> pyspark.sql.functions <span class="im" style="color: #00769E;">as</span> F</span></code></pre></div>
+<div class="sourceCode cell-code" id="cb3" style="background: #f1f3f5;"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb3-1"><span class="co" style="color: #5E5E5E;"># Run the API request   </span></span>
+<span id="cb3-2">request_info <span class="op" style="color: #5E5E5E;">=</span> requests.get(<span class="st" style="color: #20794D;">'https://sec.gov/files/company_tickers_exchange.json'</span>)</span>
+<span id="cb3-3"></span>
+<span id="cb3-4"><span class="co" style="color: #5E5E5E;"># Print the returned status code (200 is good, 404 is bad) and other content info.</span></span>
+<span id="cb3-5"><span class="bu" style="color: null;">print</span>(<span class="st" style="color: #20794D;">"Request status code:"</span>, request_info.status_code)</span>
+<span id="cb3-6"><span class="bu" style="color: null;">print</span>(<span class="st" style="color: #20794D;">"Content Type:"</span>, request_info.headers[<span class="st" style="color: #20794D;">'Content-Type'</span>])</span>
+<span id="cb3-7"><span class="bu" style="color: null;">print</span>(<span class="st" style="color: #20794D;">"Content Length:"</span>, request_info.headers[<span class="st" style="color: #20794D;">'Content-Length'</span>], <span class="st" style="color: #20794D;">'bytes'</span>)</span></code></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>Request status code: 200
+Content Type: application/json
+Content Length: 214545 bytes</code></pre>
 </div>
-<section id="create-a-pandas-dataframe" class="level2" data-number="1.1">
-<h2 data-number="1.1" class="anchored" data-anchor-id="create-a-pandas-dataframe"><span class="header-section-number">1.1</span> Create a Pandas Dataframe</h2>
+</div>
 <div class="cell" data-execution_count="4">
-<div class="sourceCode cell-code" id="cb4" style="background: #f1f3f5;"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb4-1">pdf <span class="op" style="color: #5E5E5E;">=</span> pd.DataFrame({<span class="st" style="color: #20794D;">'x'</span>:[<span class="dv" style="color: #AD0000;">1</span>,<span class="dv" style="color: #AD0000;">2</span>,<span class="dv" style="color: #AD0000;">3</span>], <span class="st" style="color: #20794D;">'y'</span>:[<span class="dv" style="color: #AD0000;">5</span>,<span class="dv" style="color: #AD0000;">6</span>,<span class="dv" style="color: #AD0000;">7</span>]})</span>
-<span id="cb4-2">pdf.to_csv(<span class="st" style="color: #20794D;">'test.csv'</span>)</span>
-<span id="cb4-3">pdf.head()</span></code></pre></div>
-<div class="cell-output cell-output-display" data-execution_count="4">
+<div class="sourceCode cell-code" id="cb5" style="background: #f1f3f5;"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb5-1"><span class="co" style="color: #5E5E5E;"># Put the requested content into a Python dict object using the `.json()` method</span></span>
+<span id="cb5-2">request_data <span class="op" style="color: #5E5E5E;">=</span> request_info.json()</span></code></pre></div>
+</div>
+</section>
+<section id="explore-the-data-that-was-returned" class="level3" data-number="3.2">
+<h3 data-number="3.2" class="anchored" data-anchor-id="explore-the-data-that-was-returned"><span class="header-section-number">3.2</span> Explore the data that was returned</h3>
+<div class="cell" data-execution_count="5">
+<div class="sourceCode cell-code" id="cb6" style="background: #f1f3f5;"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb6-1"><span class="co" style="color: #5E5E5E;"># We know that request_data is a dictionary, so let's list all of its keys. </span></span>
+<span id="cb6-2"><span class="bu" style="color: null;">print</span>(<span class="st" style="color: #20794D;">"request_data:"</span>, request_data.keys())</span></code></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>request_data: dict_keys(['fields', 'data'])</code></pre>
+</div>
+</div>
+<div class="cell" data-execution_count="6">
+<div class="sourceCode cell-code" id="cb8" style="background: #f1f3f5;"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb8-1">request_data[<span class="st" style="color: #20794D;">'fields'</span>]</span></code></pre></div>
+<div class="cell-output cell-output-display" data-execution_count="23">
+<pre><code>['cik', 'name', 'ticker', 'exchange']</code></pre>
+</div>
+</div>
+<div class="cell" data-execution_count="7">
+<div class="sourceCode cell-code" id="cb10" style="background: #f1f3f5;"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb10-1">request_data[<span class="st" style="color: #20794D;">'data'</span>][<span class="dv" style="color: #AD0000;">0</span>:<span class="dv" style="color: #AD0000;">10</span>]</span></code></pre></div>
+<div class="cell-output cell-output-display" data-execution_count="24">
+<pre><code>[[320193, 'Apple Inc.', 'AAPL', 'Nasdaq'],
+ [789019, 'MICROSOFT CORP', 'MSFT', 'Nasdaq'],
+ [1018724, 'AMAZON COM INC', 'AMZN', 'Nasdaq'],
+ [1067983, 'BERKSHIRE HATHAWAY INC', 'BRK-B', 'NYSE'],
+ [731766, 'UNITEDHEALTH GROUP INC', 'UNH', 'NYSE'],
+ [34088, 'EXXON MOBIL CORP', 'XOM', 'NYSE'],
+ [200406, 'JOHNSON &amp; JOHNSON', 'JNJ', 'NYSE'],
+ [104169, 'Walmart Inc.', 'WMT', 'NYSE'],
+ [19617, 'JPMORGAN CHASE &amp; CO', 'JPM', 'NYSE'],
+ [93410, 'CHEVRON CORP', 'CVX', 'NYSE']]</code></pre>
+</div>
+</div>
+</section>
+<section id="create-a-pandas-dataframe-from-the-api-content" class="level3" data-number="3.3">
+<h3 data-number="3.3" class="anchored" data-anchor-id="create-a-pandas-dataframe-from-the-api-content"><span class="header-section-number">3.3</span> Create a Pandas dataframe from the API content</h3>
+<div class="cell" data-execution_count="8">
+<div class="sourceCode cell-code" id="cb12" style="background: #f1f3f5;"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb12-1"><span class="co" style="color: #5E5E5E;"># Create a new dataframe</span></span>
+<span id="cb12-2">df_tickers <span class="op" style="color: #5E5E5E;">=</span> (</span>
+<span id="cb12-3">    pd.DataFrame(data<span class="op" style="color: #5E5E5E;">=</span>request_data[<span class="st" style="color: #20794D;">'data'</span>], </span>
+<span id="cb12-4">                 columns<span class="op" style="color: #5E5E5E;">=</span>request_data[<span class="st" style="color: #20794D;">'fields'</span>])</span>
+<span id="cb12-5">    .set_index(<span class="st" style="color: #20794D;">'ticker'</span>)</span>
+<span id="cb12-6">)</span>
+<span id="cb12-7"></span>
+<span id="cb12-8"><span class="co" style="color: #5E5E5E;"># Display the top few rows</span></span>
+<span id="cb12-9">df_tickers.head()</span></code></pre></div>
+<div class="cell-output cell-output-display" data-execution_count="25">
 
 <div>
 
@@ -77,25 +117,81 @@ No matching items
   <thead>
     <tr>
       <th></th>
-      <th>x</th>
-      <th>y</th>
+      <th>cik</th>
+      <th>name</th>
+      <th>exchange</th>
+    </tr>
+    <tr>
+      <th>ticker</th>
+      <th></th>
+      <th></th>
+      <th></th>
     </tr>
   </thead>
   <tbody>
     <tr>
-      <th>0</th>
-      <td>1</td>
-      <td>5</td>
+      <th>AAPL</th>
+      <td>320193</td>
+      <td>Apple Inc.</td>
+      <td>Nasdaq</td>
     </tr>
     <tr>
-      <th>1</th>
-      <td>2</td>
-      <td>6</td>
+      <th>MSFT</th>
+      <td>789019</td>
+      <td>MICROSOFT CORP</td>
+      <td>Nasdaq</td>
     </tr>
     <tr>
-      <th>2</th>
-      <td>3</td>
-      <td>7</td>
+      <th>AMZN</th>
+      <td>1018724</td>
+      <td>AMAZON COM INC</td>
+      <td>Nasdaq</td>
+    </tr>
+    <tr>
+      <th>BRK-B</th>
+      <td>1067983</td>
+      <td>BERKSHIRE HATHAWAY INC</td>
+      <td>NYSE</td>
+    </tr>
+    <tr>
+      <th>UNH</th>
+      <td>731766</td>
+      <td>UNITEDHEALTH GROUP INC</td>
+      <td>NYSE</td>
+    </tr>
+  </tbody>
+</table>
+</div>
+</div>
+</div>
+<div class="cell" data-execution_count="9">
+<div class="sourceCode cell-code" id="cb13" style="background: #f1f3f5;"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb13-1"><span class="co" style="color: #5E5E5E;"># Slice the dataframe to show only the row where ticker=='AAPL'</span></span>
+<span id="cb13-2">df_tickers.query(<span class="ss" style="color: #20794D;">f"ticker=='</span><span class="sc" style="color: #5E5E5E;">{</span>ticker<span class="sc" style="color: #5E5E5E;">}</span><span class="ss" style="color: #20794D;">'"</span>)</span></code></pre></div>
+<div class="cell-output cell-output-display" data-execution_count="26">
+
+<div>
+
+<table class="dataframe table table-sm table-striped">
+  <thead>
+    <tr>
+      <th></th>
+      <th>cik</th>
+      <th>name</th>
+      <th>exchange</th>
+    </tr>
+    <tr>
+      <th>ticker</th>
+      <th></th>
+      <th></th>
+      <th></th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>AAPL</th>
+      <td>320193</td>
+      <td>Apple Inc.</td>
+      <td>Nasdaq</td>
     </tr>
   </tbody>
 </table>
@@ -103,33 +199,322 @@ No matching items
 </div>
 </div>
 </section>
-<section id="test-to-make-sure-spark-is-working" class="level2" data-number="1.2">
-<h2 data-number="1.2" class="anchored" data-anchor-id="test-to-make-sure-spark-is-working"><span class="header-section-number">1.2</span> Test to make sure Spark is working</h2>
-<div class="cell" data-execution_count="5">
-<div class="sourceCode cell-code" id="cb5" style="background: #f1f3f5;"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb5-1">spark.sql(<span class="st" style="color: #20794D;">"select 1+1"</span>).show()</span></code></pre></div>
+<section id="create-a-function-to-pull-data-for-a-single-ticker-and-format-the-cik-as-a-string" class="level3" data-number="3.4">
+<h3 data-number="3.4" class="anchored" data-anchor-id="create-a-function-to-pull-data-for-a-single-ticker-and-format-the-cik-as-a-string"><span class="header-section-number">3.4</span> Create a function to pull data for a single ticker and format the CIK as a string</h3>
+<p>This is necessary because in the next section we will need to add a formatted CID to the API call.</p>
+<div class="cell" data-execution_count="10">
+<div class="sourceCode cell-code" id="cb14" style="background: #f1f3f5;"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb14-1"><span class="kw" style="color: #003B4F;">def</span> get_cik_string(ticker_data, ticker_symbol):</span>
+<span id="cb14-2">    ticker_symbol <span class="op" style="color: #5E5E5E;">=</span> ticker_symbol.upper()</span>
+<span id="cb14-3">    data_slice <span class="op" style="color: #5E5E5E;">=</span> ticker_data.loc[[ticker_symbol],[<span class="st" style="color: #20794D;">'cik'</span>]]</span>
+<span id="cb14-4">    cik_value <span class="op" style="color: #5E5E5E;">=</span> data_slice.values[<span class="dv" style="color: #AD0000;">0</span>][<span class="dv" style="color: #AD0000;">0</span>]</span>
+<span id="cb14-5">    cik_string <span class="op" style="color: #5E5E5E;">=</span> <span class="st" style="color: #20794D;">'CIK'</span> <span class="op" style="color: #5E5E5E;">+</span> <span class="bu" style="color: null;">str</span>(cik_value).rjust(<span class="dv" style="color: #AD0000;">10</span>, <span class="st" style="color: #20794D;">'0'</span>)</span>
+<span id="cb14-6">    <span class="cf" style="color: #003B4F;">return</span> cik_string</span></code></pre></div>
+</div>
+<div class="cell" data-execution_count="11">
+<div class="sourceCode cell-code" id="cb15" style="background: #f1f3f5;"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb15-1"><span class="co" style="color: #5E5E5E;"># Example for our ticker</span></span>
+<span id="cb15-2"><span class="bu" style="color: null;">print</span>(<span class="st" style="color: #20794D;">"ticker:"</span>, ticker)</span>
+<span id="cb15-3"><span class="bu" style="color: null;">print</span>(<span class="st" style="color: #20794D;">"CIK:"</span>,    get_cik_string(df_tickers, ticker))</span></code></pre></div>
 <div class="cell-output cell-output-stdout">
-<pre><code>+-------+
-|(1 + 1)|
-+-------+
-|      2|
-+-------+
-</code></pre>
+<pre><code>ticker: AAPL
+CIK: CIK0000320193</code></pre>
 </div>
 </div>
-<section id="section" class="level3" data-number="1.2.1">
-<h3 data-number="1.2.1" class="anchored" data-anchor-id="section"><span class="header-section-number">1.2.1</span> </h3>
-<div class="cell" data-execution_count="6">
-<div class="sourceCode cell-code" id="cb7" style="background: #f1f3f5;"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb7-1"><span class="dv" style="color: #AD0000;">1</span><span class="op" style="color: #5E5E5E;">+</span><span class="dv" style="color: #AD0000;">1</span></span></code></pre></div>
-<div class="cell-output cell-output-display" data-execution_count="6">
-<pre><code>2</code></pre>
+</section>
+</section>
+<section id="get-financial-data-from-data.sec.gov-api-for-a-specific-xbrl-line-item-tag" class="level2" data-number="4">
+<h2 data-number="4" class="anchored" data-anchor-id="get-financial-data-from-data.sec.gov-api-for-a-specific-xbrl-line-item-tag"><span class="header-section-number">4</span> Get financial data from data.sec.gov api for a specific XBRL line item tag</h2>
+<div class="cell" data-execution_count="12">
+<div class="sourceCode cell-code" id="cb17" style="background: #f1f3f5;"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb17-1"><span class="co" style="color: #5E5E5E;"># Build up the request URL</span></span>
+<span id="cb17-2">cik <span class="op" style="color: #5E5E5E;">=</span> get_cik_string(df_tickers, ticker)</span>
+<span id="cb17-3">tag <span class="op" style="color: #5E5E5E;">=</span> <span class="st" style="color: #20794D;">'Assets'</span></span>
+<span id="cb17-4">url <span class="op" style="color: #5E5E5E;">=</span> <span class="ss" style="color: #20794D;">f"https://data.sec.gov/api/xbrl/companyconcept/</span><span class="sc" style="color: #5E5E5E;">{</span>cik<span class="sc" style="color: #5E5E5E;">}</span><span class="ss" style="color: #20794D;">/us-gaap/</span><span class="sc" style="color: #5E5E5E;">{</span>tag<span class="sc" style="color: #5E5E5E;">}</span><span class="ss" style="color: #20794D;">.json"</span></span>
+<span id="cb17-5"></span>
+<span id="cb17-6"><span class="bu" style="color: null;">print</span>(<span class="st" style="color: #20794D;">"URL:"</span>, url)</span>
+<span id="cb17-7"></span>
+<span id="cb17-8"><span class="co" style="color: #5E5E5E;"># Run the API request   </span></span>
+<span id="cb17-9">request_tag_data <span class="op" style="color: #5E5E5E;">=</span> requests.get(url, headers<span class="op" style="color: #5E5E5E;">=</span>{<span class="st" style="color: #20794D;">'User-Agent'</span>: email_address})</span>
+<span id="cb17-10"></span>
+<span id="cb17-11"><span class="co" style="color: #5E5E5E;"># Print the status code (200 is good, 404 is bad), and other content info.</span></span>
+<span id="cb17-12"><span class="bu" style="color: null;">print</span>(<span class="st" style="color: #20794D;">"Request status code:"</span>, request_tag_data.status_code)</span>
+<span id="cb17-13"><span class="bu" style="color: null;">print</span>(<span class="st" style="color: #20794D;">"Content Type:"</span>, request_tag_data.headers[<span class="st" style="color: #20794D;">'Content-Type'</span>])</span>
+<span id="cb17-14"><span class="bu" style="color: null;">print</span>(<span class="st" style="color: #20794D;">"Content Length:"</span>, request_tag_data.headers[<span class="st" style="color: #20794D;">'Content-Length'</span>], <span class="st" style="color: #20794D;">'bytes'</span>)</span></code></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>URL: https://data.sec.gov/api/xbrl/companyconcept/CIK0000320193/us-gaap/Assets.json</code></pre>
 </div>
+<div class="cell-output cell-output-stdout">
+<pre><code>Request status code: 200
+Content Type: application/json
+Content Length: 2052 bytes</code></pre>
+</div>
+</div>
+<div class="cell" data-execution_count="13">
+<div class="sourceCode cell-code" id="cb20" style="background: #f1f3f5;"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb20-1">tag_data <span class="op" style="color: #5E5E5E;">=</span> request_tag_data.json()</span>
+<span id="cb20-2"></span>
+<span id="cb20-3">pprint(tag_data, depth<span class="op" style="color: #5E5E5E;">=</span><span class="dv" style="color: #AD0000;">2</span>)</span></code></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>{'cik': 320193,
+ 'description': 'Sum of the carrying amounts as of the balance sheet date of '
+                'all assets that are recognized. Assets are probable future '
+                'economic benefits obtained or controlled by an entity as a '
+                'result of past transactions or events.',
+ 'entityName': 'Apple Inc.',
+ 'label': 'Assets',
+ 'tag': 'Assets',
+ 'taxonomy': 'us-gaap',
+ 'units': {'USD': [...]}}</code></pre>
+</div>
+</div>
+<div class="cell" data-execution_count="14">
+<div class="sourceCode cell-code" id="cb22" style="background: #f1f3f5;"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb22-1">df_tag_data <span class="op" style="color: #5E5E5E;">=</span> pd.DataFrame.from_dict(tag_data[<span class="st" style="color: #20794D;">'units'</span>][<span class="st" style="color: #20794D;">'USD'</span>])</span></code></pre></div>
+</div>
+<div class="cell" data-execution_count="15">
+<div class="sourceCode cell-code" id="cb23" style="background: #f1f3f5;"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb23-1">df_tag_data</span></code></pre></div>
+<div class="cell-output cell-output-display" data-execution_count="32">
+
+<div>
+
+<table class="dataframe table table-sm table-striped">
+  <thead>
+    <tr>
+      <th></th>
+      <th>end</th>
+      <th>val</th>
+      <th>accn</th>
+      <th>fy</th>
+      <th>fp</th>
+      <th>form</th>
+      <th>filed</th>
+      <th>frame</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>0</th>
+      <td>2008-09-27</td>
+      <td>39572000000</td>
+      <td>0001193125-09-153165</td>
+      <td>2009</td>
+      <td>Q3</td>
+      <td>10-Q</td>
+      <td>2009-07-22</td>
+      <td>NaN</td>
+    </tr>
+    <tr>
+      <th>1</th>
+      <td>2008-09-27</td>
+      <td>39572000000</td>
+      <td>0001193125-09-214859</td>
+      <td>2009</td>
+      <td>FY</td>
+      <td>10-K</td>
+      <td>2009-10-27</td>
+      <td>NaN</td>
+    </tr>
+    <tr>
+      <th>2</th>
+      <td>2008-09-27</td>
+      <td>36171000000</td>
+      <td>0001193125-10-012091</td>
+      <td>2009</td>
+      <td>FY</td>
+      <td>10-K/A</td>
+      <td>2010-01-25</td>
+      <td>NaN</td>
+    </tr>
+    <tr>
+      <th>3</th>
+      <td>2008-09-27</td>
+      <td>36171000000</td>
+      <td>0001193125-10-238044</td>
+      <td>2010</td>
+      <td>FY</td>
+      <td>10-K</td>
+      <td>2010-10-27</td>
+      <td>CY2008Q3I</td>
+    </tr>
+    <tr>
+      <th>4</th>
+      <td>2009-06-27</td>
+      <td>48140000000</td>
+      <td>0001193125-09-153165</td>
+      <td>2009</td>
+      <td>Q3</td>
+      <td>10-Q</td>
+      <td>2009-07-22</td>
+      <td>CY2009Q2I</td>
+    </tr>
+    <tr>
+      <th>...</th>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+    </tr>
+    <tr>
+      <th>111</th>
+      <td>2021-09-25</td>
+      <td>351002000000</td>
+      <td>0000320193-22-000108</td>
+      <td>2022</td>
+      <td>FY</td>
+      <td>10-K</td>
+      <td>2022-10-28</td>
+      <td>CY2021Q3I</td>
+    </tr>
+    <tr>
+      <th>112</th>
+      <td>2021-12-25</td>
+      <td>381191000000</td>
+      <td>0000320193-22-000007</td>
+      <td>2022</td>
+      <td>Q1</td>
+      <td>10-Q</td>
+      <td>2022-01-28</td>
+      <td>CY2021Q4I</td>
+    </tr>
+    <tr>
+      <th>113</th>
+      <td>2022-03-26</td>
+      <td>350662000000</td>
+      <td>0000320193-22-000059</td>
+      <td>2022</td>
+      <td>Q2</td>
+      <td>10-Q</td>
+      <td>2022-04-29</td>
+      <td>CY2022Q1I</td>
+    </tr>
+    <tr>
+      <th>114</th>
+      <td>2022-06-25</td>
+      <td>336309000000</td>
+      <td>0000320193-22-000070</td>
+      <td>2022</td>
+      <td>Q3</td>
+      <td>10-Q</td>
+      <td>2022-07-29</td>
+      <td>CY2022Q2I</td>
+    </tr>
+    <tr>
+      <th>115</th>
+      <td>2022-09-24</td>
+      <td>352755000000</td>
+      <td>0000320193-22-000108</td>
+      <td>2022</td>
+      <td>FY</td>
+      <td>10-K</td>
+      <td>2022-10-28</td>
+      <td>CY2022Q3I</td>
+    </tr>
+  </tbody>
+</table>
+<p>116 rows × 8 columns</p>
+</div>
+</div>
+</div>
+<div class="cell" data-execution_count="16">
+<div class="sourceCode cell-code" id="cb24" style="background: #f1f3f5;"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb24-1"><span class="co" style="color: #5E5E5E;"># Filter rows to only those with current year (CY) labels</span></span>
+<span id="cb24-2">starts_with_cy <span class="op" style="color: #5E5E5E;">=</span> <span class="kw" style="color: #003B4F;">lambda</span> x: <span class="bu" style="color: null;">bool</span>(<span class="bu" style="color: null;">isinstance</span>(re.search(<span class="vs" style="color: #20794D;">r'^CY'</span>, x), re.Match))</span>
+<span id="cb24-3">x_axis_name <span class="op" style="color: #5E5E5E;">=</span> <span class="st" style="color: #20794D;">'End Date'</span></span>
+<span id="cb24-4">y_axis_name <span class="op" style="color: #5E5E5E;">=</span> <span class="ss" style="color: #20794D;">f'</span><span class="sc" style="color: #5E5E5E;">{</span>tag<span class="sc" style="color: #5E5E5E;">}</span><span class="ss" style="color: #20794D;"> (USD in Billions)'</span></span>
+<span id="cb24-5"></span>
+<span id="cb24-6">df_plot_data <span class="op" style="color: #5E5E5E;">=</span> (</span>
+<span id="cb24-7">    df_tag_data</span>
+<span id="cb24-8">    .query(<span class="st" style="color: #20794D;">"form == '10-Q'"</span>)</span>
+<span id="cb24-9">    .assign(yr_mon      <span class="op" style="color: #5E5E5E;">=</span> <span class="kw" style="color: #003B4F;">lambda</span> x: [<span class="ss" style="color: #20794D;">f"</span><span class="sc" style="color: #5E5E5E;">{</span>y[<span class="dv" style="color: #AD0000;">0</span>]<span class="sc" style="color: #5E5E5E;">}</span><span class="ss" style="color: #20794D;">-</span><span class="sc" style="color: #5E5E5E;">{</span>y[<span class="dv" style="color: #AD0000;">1</span>]<span class="sc" style="color: #5E5E5E;">}</span><span class="ss" style="color: #20794D;">"</span> <span class="cf" style="color: #003B4F;">for</span> y <span class="kw" style="color: #003B4F;">in</span> <span class="bu" style="color: null;">zip</span>(x.fy, x.fp)] )</span>
+<span id="cb24-10">    .assign(filter_flag <span class="op" style="color: #5E5E5E;">=</span> <span class="kw" style="color: #003B4F;">lambda</span> x: [starts_with_cy(<span class="bu" style="color: null;">str</span>(y)) <span class="cf" style="color: #003B4F;">for</span> y <span class="kw" style="color: #003B4F;">in</span> x.frame])</span>
+<span id="cb24-11">    .query(<span class="st" style="color: #20794D;">"filter_flag==True"</span>)</span>
+<span id="cb24-12">    .<span class="bu" style="color: null;">filter</span>([<span class="st" style="color: #20794D;">'end'</span>, <span class="st" style="color: #20794D;">'val'</span>])</span>
+<span id="cb24-13">    .assign(val <span class="op" style="color: #5E5E5E;">=</span> <span class="kw" style="color: #003B4F;">lambda</span> x: x.val<span class="op" style="color: #5E5E5E;">/</span><span class="dv" style="color: #AD0000;">1000000000</span>)</span>
+<span id="cb24-14">    .rename(columns<span class="op" style="color: #5E5E5E;">=</span>{<span class="st" style="color: #20794D;">'end'</span>:x_axis_name, <span class="st" style="color: #20794D;">'val'</span>:y_axis_name})</span>
+<span id="cb24-15">    .sort_values(by<span class="op" style="color: #5E5E5E;">=</span>x_axis_name)</span>
+<span id="cb24-16">)</span>
+<span id="cb24-17"></span>
+<span id="cb24-18">df_plot_data.tail(<span class="dv" style="color: #AD0000;">10</span>)</span></code></pre></div>
+<div class="cell-output cell-output-display" data-execution_count="33">
+
+<div>
+
+<table class="dataframe table table-sm table-striped">
+  <thead>
+    <tr>
+      <th></th>
+      <th>End Date</th>
+      <th>Assets (USD in Billions)</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>90</th>
+      <td>2019-06-29</td>
+      <td>322.239</td>
+    </tr>
+    <tr>
+      <th>96</th>
+      <td>2019-12-28</td>
+      <td>340.618</td>
+    </tr>
+    <tr>
+      <th>97</th>
+      <td>2020-03-28</td>
+      <td>320.400</td>
+    </tr>
+    <tr>
+      <th>98</th>
+      <td>2020-06-27</td>
+      <td>317.344</td>
+    </tr>
+    <tr>
+      <th>104</th>
+      <td>2020-12-26</td>
+      <td>354.054</td>
+    </tr>
+    <tr>
+      <th>105</th>
+      <td>2021-03-27</td>
+      <td>337.158</td>
+    </tr>
+    <tr>
+      <th>106</th>
+      <td>2021-06-26</td>
+      <td>329.840</td>
+    </tr>
+    <tr>
+      <th>112</th>
+      <td>2021-12-25</td>
+      <td>381.191</td>
+    </tr>
+    <tr>
+      <th>113</th>
+      <td>2022-03-26</td>
+      <td>350.662</td>
+    </tr>
+    <tr>
+      <th>114</th>
+      <td>2022-06-25</td>
+      <td>336.309</td>
+    </tr>
+  </tbody>
+</table>
+</div>
+</div>
+</div>
+<div class="cell" data-execution_count="17">
+<div class="sourceCode cell-code" id="cb25" style="background: #f1f3f5;"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb25-1">df_plot_data.plot(kind <span class="op" style="color: #5E5E5E;">=</span> <span class="st" style="color: #20794D;">'bar'</span>, x <span class="op" style="color: #5E5E5E;">=</span> x_axis_name, y <span class="op" style="color: #5E5E5E;">=</span> y_axis_name, </span>
+<span id="cb25-2">                  figsize<span class="op" style="color: #5E5E5E;">=</span>(<span class="dv" style="color: #AD0000;">11</span>, <span class="dv" style="color: #AD0000;">6</span>), title <span class="op" style="color: #5E5E5E;">=</span> <span class="ss" style="color: #20794D;">f"</span><span class="sc" style="color: #5E5E5E;">{</span>ticker<span class="sc" style="color: #5E5E5E;">}</span><span class="ss" style="color: #20794D;"> </span><span class="sc" style="color: #5E5E5E;">{</span>tag<span class="sc" style="color: #5E5E5E;">}</span><span class="ss" style="color: #20794D;">"</span>)</span>
+<span id="cb25-3">plt.show()</span></code></pre></div>
+<div class="cell-output cell-output-display">
+<p><img src="htts://www.swied.com/posts/stock_ticker_data/stock_ticker_data_files/figure-html/cell-18-output-1.png" width="872" height="588"></p>
+</div>
+</div>
+</section>
 </div>
 
 
 
-</section>
-</section>
-</section>
 
 <div class="quarto-listing quarto-listing-container-default" id="listing-listing">
 <div class="list quarto-listing-default">
@@ -139,37 +524,14 @@ No matching items
 No matching items
 </div>
 </div> ]]></description>
-  <guid>htts://www.swied.com/posts/intro-to-pyspark/Intro-to-Pyspark.html</guid>
-  <pubDate>Thu, 03 Nov 2022 07:00:00 GMT</pubDate>
-</item>
-<item>
-  <title>Welcome To My Blog</title>
-  <dc:creator>Tristan O&#39;Malley</dc:creator>
-  <link>htts://www.swied.com/posts/welcome/index.html</link>
-  <description><![CDATA[ 
-
-
-
-
-<p>This is the first post in a Quarto blog. Welcome!</p>
-<p><img src="htts://www.swied.com/posts/welcome/thumbnail.jpg" class="img-fluid"></p>
-<p>Since this post doesn’t specify an explicit <code>image</code>, the first image in the post will be used in the listing page of posts.</p>
-
-
-
-
-<div class="quarto-listing quarto-listing-container-default" id="listing-listing">
-<div class="list quarto-listing-default">
-
-</div>
-<div class="listing-no-matching d-none">
-No matching items
-</div>
-</div> ]]></description>
-  <category>news</category>
-  <guid>htts://www.swied.com/posts/welcome/index.html</guid>
-  <pubDate>Mon, 31 Oct 2022 07:00:00 GMT</pubDate>
-  <media:content url="htts://www.swied.com/posts/welcome/thumbnail.jpg" medium="image" type="image/jpeg"/>
+  <category>Pandas</category>
+  <category>API&#39;s</category>
+  <category>Matplotlib</category>
+  <category>Finance</category>
+  <category>Python</category>
+  <guid>htts://www.swied.com/posts/stock_ticker_data/stock_ticker_data.html</guid>
+  <pubDate>Sun, 06 Nov 2022 07:00:00 GMT</pubDate>
+  <media:content url="htts://www.swied.com/posts/stock_ticker_data/image.png" medium="image" type="image/png" height="99" width="144"/>
 </item>
 </channel>
 </rss>

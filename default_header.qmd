@@ -1,0 +1,18 @@
+---
+title: Post Title 
+author: Scott Wied
+date: MM/DD/20YY
+categories: [news, code, analysis]
+image: "image.jpg"
+format:
+  html:
+    code-fold: false
+number-sections: true
+toc: true
+toc-location: left
+code-line-numbers: true
+execute:
+  warning: false
+jupyter: python3
+---
+

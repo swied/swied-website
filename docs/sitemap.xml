@@ -1,23 +1,15 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   <url>
-    <loc>htts://www.swied.com/posts/post-with-code/index.html</loc>
-    <lastmod>2022-11-05T12:29:12.687Z</lastmod>
-  </url>
-  <url>
-    <loc>htts://www.swied.com/posts/welcome/index.html</loc>
-    <lastmod>2022-11-05T12:29:13.172Z</lastmod>
-  </url>
-  <url>
-    <loc>htts://www.swied.com/posts/intro-to-pyspark/Intro-to-Pyspark.html</loc>
-    <lastmod>2022-11-05T12:29:15.458Z</lastmod>
-  </url>
-  <url>
     <loc>htts://www.swied.com/index.html</loc>
-    <lastmod>2022-11-05T12:29:15.944Z</lastmod>
+    <lastmod>2022-11-07T05:24:25.938Z</lastmod>
   </url>
   <url>
     <loc>htts://www.swied.com/about.html</loc>
-    <lastmod>2022-11-05T12:29:16.358Z</lastmod>
+    <lastmod>2022-11-07T05:24:00.977Z</lastmod>
+  </url>
+  <url>
+    <loc>htts://www.swied.com/posts/stock_ticker_data/stock_ticker_data.html</loc>
+    <lastmod>2022-11-07T05:24:25.762Z</lastmod>
   </url>
 </urlset>
