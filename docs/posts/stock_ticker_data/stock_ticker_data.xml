@@ -8,13 +8,13 @@
 <title>Scott&#39;s Data Science Blog</title>
 <link>htts://www.swied.com/posts/stock_ticker_data/stock_ticker_data.html</link>
 <atom:link href="htts://www.swied.com/posts/stock_ticker_data/stock_ticker_data.xml" rel="self" type="application/rss+xml"/>
-<description>A notebook, with code, showing how to pull data from sec.gov web API’s</description>
+<description>A notebook, with code, showing how to pull data from a couple of sec.gov web API’s</description>
 <image>
 <url>htts://www.swied.com/image.png</url>
 <title>Scott&#39;s Data Science Blog</title>
 <link>htts://www.swied.com/posts/stock_ticker_data/stock_ticker_data.html</link>
 </image>
 <generator>quarto-1.2.258</generator>
-<lastBuildDate>Mon, 07 Nov 2022 06:17:21 GMT</lastBuildDate>
+<lastBuildDate>Mon, 07 Nov 2022 06:31:23 GMT</lastBuildDate>
 </channel>
 </rss>
