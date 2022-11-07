@@ -8,7 +8,9 @@ website:
   google-analytics: "G-ZZ12P3MMWN"
   navbar:
     right:
-      - about.qmd
+      - icon: linkedin
+        text: LinkedIn
+        href: https://www.linkedin.com/in/scottwied/
 listing:
   contents: posts
   feed: true
