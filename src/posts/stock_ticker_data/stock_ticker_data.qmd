@@ -27,13 +27,11 @@ jupyter: python3
 ## Import python packages
 
 ```{python}
-import urllib
 import requests
 import json
 from pprint import pprint
 import pandas as pd
 import numpy as np
-from collections import namedtuple
 import re
 import matplotlib.pyplot as plt
 ```
@@ -41,8 +39,11 @@ import matplotlib.pyplot as plt
 ## Parameters
 
 ```{python}
+# Which company do you wish to track?
 ticker = 'AAPL'
-email_address = 'your-email@example.com'  # Enter your email address here.  It needs to be included in the URL of the API call.
+
+# An email address needs to be included in the URL of the API call
+email_address = 'your-email@example.com'  
 ```
 
 ## Find the CIK number for the chosen stock ticker
@@ -51,7 +52,7 @@ email_address = 'your-email@example.com'  # Enter your email address here.  It n
 
 ```{python}
 # Run the API request   
-request_info = requests.get('https://www.sec.gov/files/company_tickers_exchange.json')
+request_info = requests.get('https://sec.gov/files/company_tickers_exchange.json')
 
 # Print the returned status code (200 is good, 404 is bad) and other content info.
 print("Request status code:", request_info.status_code)
@@ -130,7 +131,7 @@ print("URL:", url)
 # Run the API request   
 request_tag_data = requests.get(url, headers={'User-Agent': email_address})
 
-# Print the returned status code (200 is good, 404 is bad), and other content info.
+# Print the status code (200 is good, 404 is bad), and other content info.
 print("Request status code:", request_tag_data.status_code)
 print("Content Type:", request_tag_data.headers['Content-Type'])
 print("Content Length:", request_tag_data.headers['Content-Length'], 'bytes')
@@ -138,11 +139,10 @@ print("Content Length:", request_tag_data.headers['Content-Length'], 'bytes')
 
 ```{python}
 tag_data = request_tag_data.json()
-```
 
-```{python}
 pprint(tag_data, depth=2)
 ```
+
 
 ```{python}
 df_tag_data = pd.DataFrame.from_dict(tag_data['units']['USD'])
@@ -160,7 +160,7 @@ y_axis_name = f'{tag} (USD in Billions)'
 
 df_plot_data = (
     df_tag_data
-    .query("form=='10-Q'")
+    .query("form == '10-Q'")
     .assign(yr_mon      = lambda x: [f"{y[0]}-{y[1]}" for y in zip(x.fy, x.fp)] )
     .assign(filter_flag = lambda x: [starts_with_cy(str(y)) for y in x.frame])
     .query("filter_flag==True")
@@ -174,9 +174,11 @@ df_plot_data.tail(10)
 ```
 
 ```{python}
-df_plot_data.plot(kind = 'bar', x = x_axis_name, y = y_axis_name, figsize=(12, 5), title = f"{ticker} {tag}")
+df_plot_data.plot(kind = 'bar', x = x_axis_name, y = y_axis_name, 
+                  figsize=(11, 6), title = f"{ticker} {tag}")
 plt.show()
 ```
 
 ::::
+
 

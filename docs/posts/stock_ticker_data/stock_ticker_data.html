@@ -259,22 +259,23 @@ gtag('config', 'G-ZZ12P3MMWN', { 'anonymize_ip': true});
 <section id="import-python-packages" class="level2" data-number="1">
 <h2 data-number="1" class="anchored" data-anchor-id="import-python-packages"><span class="header-section-number">1</span> Import python packages</h2>
 <div class="cell" data-execution_count="1">
-<div class="sourceCode cell-code" id="cb1"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb1-1"><a href="#cb1-1"></a><span class="im">import</span> urllib</span>
-<span id="cb1-2"><a href="#cb1-2"></a><span class="im">import</span> requests</span>
-<span id="cb1-3"><a href="#cb1-3"></a><span class="im">import</span> json</span>
-<span id="cb1-4"><a href="#cb1-4"></a><span class="im">from</span> pprint <span class="im">import</span> pprint</span>
-<span id="cb1-5"><a href="#cb1-5"></a><span class="im">import</span> pandas <span class="im">as</span> pd</span>
-<span id="cb1-6"><a href="#cb1-6"></a><span class="im">import</span> numpy <span class="im">as</span> np</span>
-<span id="cb1-7"><a href="#cb1-7"></a><span class="im">from</span> collections <span class="im">import</span> namedtuple</span>
-<span id="cb1-8"><a href="#cb1-8"></a><span class="im">import</span> re</span>
-<span id="cb1-9"><a href="#cb1-9"></a><span class="im">import</span> matplotlib.pyplot <span class="im">as</span> plt</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb1"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb1-1"><a href="#cb1-1"></a><span class="im">import</span> requests</span>
+<span id="cb1-2"><a href="#cb1-2"></a><span class="im">import</span> json</span>
+<span id="cb1-3"><a href="#cb1-3"></a><span class="im">from</span> pprint <span class="im">import</span> pprint</span>
+<span id="cb1-4"><a href="#cb1-4"></a><span class="im">import</span> pandas <span class="im">as</span> pd</span>
+<span id="cb1-5"><a href="#cb1-5"></a><span class="im">import</span> numpy <span class="im">as</span> np</span>
+<span id="cb1-6"><a href="#cb1-6"></a><span class="im">import</span> re</span>
+<span id="cb1-7"><a href="#cb1-7"></a><span class="im">import</span> matplotlib.pyplot <span class="im">as</span> plt</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 </section>
 <section id="parameters" class="level2" data-number="2">
 <h2 data-number="2" class="anchored" data-anchor-id="parameters"><span class="header-section-number">2</span> Parameters</h2>
 <div class="cell" data-execution_count="2">
-<div class="sourceCode cell-code" id="cb2"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb2-1"><a href="#cb2-1"></a>ticker <span class="op">=</span> <span class="st">'AAPL'</span></span>
-<span id="cb2-2"><a href="#cb2-2"></a>email_address <span class="op">=</span> <span class="st">'your-email@example.com'</span>  <span class="co"># Enter your email address here.  It needs to be included in the URL of the API call.</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb2"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb2-1"><a href="#cb2-1"></a><span class="co"># Which company do you wish to track?</span></span>
+<span id="cb2-2"><a href="#cb2-2"></a>ticker <span class="op">=</span> <span class="st">'AAPL'</span></span>
+<span id="cb2-3"><a href="#cb2-3"></a></span>
+<span id="cb2-4"><a href="#cb2-4"></a><span class="co"># An email address needs to be included in the URL of the API call</span></span>
+<span id="cb2-5"><a href="#cb2-5"></a>email_address <span class="op">=</span> <span class="st">'your-email@example.com'</span>  </span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 </section>
 <section id="find-the-cik-number-for-the-chosen-stock-ticker" class="level2" data-number="3">
@@ -283,7 +284,7 @@ gtag('config', 'G-ZZ12P3MMWN', { 'anonymize_ip': true});
 <h3 data-number="3.1" class="anchored" data-anchor-id="request-ticker-exchange-data-from-the-sec.gov-api"><span class="header-section-number">3.1</span> Request ticker exchange data from the sec.gov API</h3>
 <div class="cell" data-execution_count="3">
 <div class="sourceCode cell-code" id="cb3"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb3-1"><a href="#cb3-1"></a><span class="co"># Run the API request   </span></span>
-<span id="cb3-2"><a href="#cb3-2"></a>request_info <span class="op">=</span> requests.get(<span class="st">'https://www.sec.gov/files/company_tickers_exchange.json'</span>)</span>
+<span id="cb3-2"><a href="#cb3-2"></a>request_info <span class="op">=</span> requests.get(<span class="st">'https://sec.gov/files/company_tickers_exchange.json'</span>)</span>
 <span id="cb3-3"><a href="#cb3-3"></a></span>
 <span id="cb3-4"><a href="#cb3-4"></a><span class="co"># Print the returned status code (200 is good, 404 is bad) and other content info.</span></span>
 <span id="cb3-5"><a href="#cb3-5"></a><span class="bu">print</span>(<span class="st">"Request status code:"</span>, request_info.status_code)</span>
@@ -311,13 +312,13 @@ Content Length: 214545 bytes</code></pre>
 </div>
 <div class="cell" data-execution_count="6">
 <div class="sourceCode cell-code" id="cb8"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb8-1"><a href="#cb8-1"></a>request_data[<span class="st">'fields'</span>]</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output cell-output-display" data-execution_count="78">
+<div class="cell-output cell-output-display" data-execution_count="23">
 <pre><code>['cik', 'name', 'ticker', 'exchange']</code></pre>
 </div>
 </div>
 <div class="cell" data-execution_count="7">
 <div class="sourceCode cell-code" id="cb10"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb10-1"><a href="#cb10-1"></a>request_data[<span class="st">'data'</span>][<span class="dv">0</span>:<span class="dv">10</span>]</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output cell-output-display" data-execution_count="79">
+<div class="cell-output cell-output-display" data-execution_count="24">
 <pre><code>[[320193, 'Apple Inc.', 'AAPL', 'Nasdaq'],
  [789019, 'MICROSOFT CORP', 'MSFT', 'Nasdaq'],
  [1018724, 'AMAZON COM INC', 'AMZN', 'Nasdaq'],
@@ -343,7 +344,7 @@ Content Length: 214545 bytes</code></pre>
 <span id="cb12-7"><a href="#cb12-7"></a></span>
 <span id="cb12-8"><a href="#cb12-8"></a><span class="co"># Display the top few rows</span></span>
 <span id="cb12-9"><a href="#cb12-9"></a>df_tickers.head()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output cell-output-display" data-execution_count="80">
+<div class="cell-output cell-output-display" data-execution_count="25">
 
 <div>
 
@@ -401,7 +402,7 @@ Content Length: 214545 bytes</code></pre>
 <div class="cell" data-execution_count="9">
 <div class="sourceCode cell-code" id="cb13"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb13-1"><a href="#cb13-1"></a><span class="co"># Slice the dataframe to show only the row where ticker=='AAPL'</span></span>
 <span id="cb13-2"><a href="#cb13-2"></a>df_tickers.query(<span class="ss">f"ticker=='</span><span class="sc">{</span>ticker<span class="sc">}</span><span class="ss">'"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output cell-output-display" data-execution_count="81">
+<div class="cell-output cell-output-display" data-execution_count="26">
 
 <div>
 
@@ -468,7 +469,7 @@ CIK: CIK0000320193</code></pre>
 <span id="cb17-8"><a href="#cb17-8"></a><span class="co"># Run the API request   </span></span>
 <span id="cb17-9"><a href="#cb17-9"></a>request_tag_data <span class="op">=</span> requests.get(url, headers<span class="op">=</span>{<span class="st">'User-Agent'</span>: email_address})</span>
 <span id="cb17-10"><a href="#cb17-10"></a></span>
-<span id="cb17-11"><a href="#cb17-11"></a><span class="co"># Print the returned status code (200 is good, 404 is bad), and other content info.</span></span>
+<span id="cb17-11"><a href="#cb17-11"></a><span class="co"># Print the status code (200 is good, 404 is bad), and other content info.</span></span>
 <span id="cb17-12"><a href="#cb17-12"></a><span class="bu">print</span>(<span class="st">"Request status code:"</span>, request_tag_data.status_code)</span>
 <span id="cb17-13"><a href="#cb17-13"></a><span class="bu">print</span>(<span class="st">"Content Type:"</span>, request_tag_data.headers[<span class="st">'Content-Type'</span>])</span>
 <span id="cb17-14"><a href="#cb17-14"></a><span class="bu">print</span>(<span class="st">"Content Length:"</span>, request_tag_data.headers[<span class="st">'Content-Length'</span>], <span class="st">'bytes'</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
@@ -482,10 +483,9 @@ Content Length: 2052 bytes</code></pre>
 </div>
 </div>
 <div class="cell" data-execution_count="13">
-<div class="sourceCode cell-code" id="cb20"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb20-1"><a href="#cb20-1"></a>tag_data <span class="op">=</span> request_tag_data.json()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-</div>
-<div class="cell" data-execution_count="14">
-<div class="sourceCode cell-code" id="cb21"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb21-1"><a href="#cb21-1"></a>pprint(tag_data, depth<span class="op">=</span><span class="dv">2</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb20"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb20-1"><a href="#cb20-1"></a>tag_data <span class="op">=</span> request_tag_data.json()</span>
+<span id="cb20-2"><a href="#cb20-2"></a></span>
+<span id="cb20-3"><a href="#cb20-3"></a>pprint(tag_data, depth<span class="op">=</span><span class="dv">2</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>{'cik': 320193,
  'description': 'Sum of the carrying amounts as of the balance sheet date of '
@@ -499,12 +499,12 @@ Content Length: 2052 bytes</code></pre>
  'units': {'USD': [...]}}</code></pre>
 </div>
 </div>
-<div class="cell" data-execution_count="15">
-<div class="sourceCode cell-code" id="cb23"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb23-1"><a href="#cb23-1"></a>df_tag_data <span class="op">=</span> pd.DataFrame.from_dict(tag_data[<span class="st">'units'</span>][<span class="st">'USD'</span>])</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell" data-execution_count="14">
+<div class="sourceCode cell-code" id="cb22"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb22-1"><a href="#cb22-1"></a>df_tag_data <span class="op">=</span> pd.DataFrame.from_dict(tag_data[<span class="st">'units'</span>][<span class="st">'USD'</span>])</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
-<div class="cell" data-execution_count="16">
-<div class="sourceCode cell-code" id="cb24"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb24-1"><a href="#cb24-1"></a>df_tag_data</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output cell-output-display" data-execution_count="88">
+<div class="cell" data-execution_count="15">
+<div class="sourceCode cell-code" id="cb23"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb23-1"><a href="#cb23-1"></a>df_tag_data</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display" data-execution_count="32">
 
 <div>
 
@@ -650,26 +650,26 @@ Content Length: 2052 bytes</code></pre>
 </div>
 </div>
 </div>
-<div class="cell" data-execution_count="17">
-<div class="sourceCode cell-code" id="cb25"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb25-1"><a href="#cb25-1"></a><span class="co"># Filter rows to only those with current year (CY) labels</span></span>
-<span id="cb25-2"><a href="#cb25-2"></a>starts_with_cy <span class="op">=</span> <span class="kw">lambda</span> x: <span class="bu">bool</span>(<span class="bu">isinstance</span>(re.search(<span class="vs">r'^CY'</span>, x), re.Match))</span>
-<span id="cb25-3"><a href="#cb25-3"></a>x_axis_name <span class="op">=</span> <span class="st">'End Date'</span></span>
-<span id="cb25-4"><a href="#cb25-4"></a>y_axis_name <span class="op">=</span> <span class="ss">f'</span><span class="sc">{</span>tag<span class="sc">}</span><span class="ss"> (USD in Billions)'</span></span>
-<span id="cb25-5"><a href="#cb25-5"></a></span>
-<span id="cb25-6"><a href="#cb25-6"></a>df_plot_data <span class="op">=</span> (</span>
-<span id="cb25-7"><a href="#cb25-7"></a>    df_tag_data</span>
-<span id="cb25-8"><a href="#cb25-8"></a>    .query(<span class="st">"form=='10-Q'"</span>)</span>
-<span id="cb25-9"><a href="#cb25-9"></a>    .assign(yr_mon      <span class="op">=</span> <span class="kw">lambda</span> x: [<span class="ss">f"</span><span class="sc">{</span>y[<span class="dv">0</span>]<span class="sc">}</span><span class="ss">-</span><span class="sc">{</span>y[<span class="dv">1</span>]<span class="sc">}</span><span class="ss">"</span> <span class="cf">for</span> y <span class="kw">in</span> <span class="bu">zip</span>(x.fy, x.fp)] )</span>
-<span id="cb25-10"><a href="#cb25-10"></a>    .assign(filter_flag <span class="op">=</span> <span class="kw">lambda</span> x: [starts_with_cy(<span class="bu">str</span>(y)) <span class="cf">for</span> y <span class="kw">in</span> x.frame])</span>
-<span id="cb25-11"><a href="#cb25-11"></a>    .query(<span class="st">"filter_flag==True"</span>)</span>
-<span id="cb25-12"><a href="#cb25-12"></a>    .<span class="bu">filter</span>([<span class="st">'end'</span>, <span class="st">'val'</span>])</span>
-<span id="cb25-13"><a href="#cb25-13"></a>    .assign(val <span class="op">=</span> <span class="kw">lambda</span> x: x.val<span class="op">/</span><span class="dv">1000000000</span>)</span>
-<span id="cb25-14"><a href="#cb25-14"></a>    .rename(columns<span class="op">=</span>{<span class="st">'end'</span>:x_axis_name, <span class="st">'val'</span>:y_axis_name})</span>
-<span id="cb25-15"><a href="#cb25-15"></a>    .sort_values(by<span class="op">=</span>x_axis_name)</span>
-<span id="cb25-16"><a href="#cb25-16"></a>)</span>
-<span id="cb25-17"><a href="#cb25-17"></a></span>
-<span id="cb25-18"><a href="#cb25-18"></a>df_plot_data.tail(<span class="dv">10</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output cell-output-display" data-execution_count="89">
+<div class="cell" data-execution_count="16">
+<div class="sourceCode cell-code" id="cb24"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb24-1"><a href="#cb24-1"></a><span class="co"># Filter rows to only those with current year (CY) labels</span></span>
+<span id="cb24-2"><a href="#cb24-2"></a>starts_with_cy <span class="op">=</span> <span class="kw">lambda</span> x: <span class="bu">bool</span>(<span class="bu">isinstance</span>(re.search(<span class="vs">r'^CY'</span>, x), re.Match))</span>
+<span id="cb24-3"><a href="#cb24-3"></a>x_axis_name <span class="op">=</span> <span class="st">'End Date'</span></span>
+<span id="cb24-4"><a href="#cb24-4"></a>y_axis_name <span class="op">=</span> <span class="ss">f'</span><span class="sc">{</span>tag<span class="sc">}</span><span class="ss"> (USD in Billions)'</span></span>
+<span id="cb24-5"><a href="#cb24-5"></a></span>
+<span id="cb24-6"><a href="#cb24-6"></a>df_plot_data <span class="op">=</span> (</span>
+<span id="cb24-7"><a href="#cb24-7"></a>    df_tag_data</span>
+<span id="cb24-8"><a href="#cb24-8"></a>    .query(<span class="st">"form == '10-Q'"</span>)</span>
+<span id="cb24-9"><a href="#cb24-9"></a>    .assign(yr_mon      <span class="op">=</span> <span class="kw">lambda</span> x: [<span class="ss">f"</span><span class="sc">{</span>y[<span class="dv">0</span>]<span class="sc">}</span><span class="ss">-</span><span class="sc">{</span>y[<span class="dv">1</span>]<span class="sc">}</span><span class="ss">"</span> <span class="cf">for</span> y <span class="kw">in</span> <span class="bu">zip</span>(x.fy, x.fp)] )</span>
+<span id="cb24-10"><a href="#cb24-10"></a>    .assign(filter_flag <span class="op">=</span> <span class="kw">lambda</span> x: [starts_with_cy(<span class="bu">str</span>(y)) <span class="cf">for</span> y <span class="kw">in</span> x.frame])</span>
+<span id="cb24-11"><a href="#cb24-11"></a>    .query(<span class="st">"filter_flag==True"</span>)</span>
+<span id="cb24-12"><a href="#cb24-12"></a>    .<span class="bu">filter</span>([<span class="st">'end'</span>, <span class="st">'val'</span>])</span>
+<span id="cb24-13"><a href="#cb24-13"></a>    .assign(val <span class="op">=</span> <span class="kw">lambda</span> x: x.val<span class="op">/</span><span class="dv">1000000000</span>)</span>
+<span id="cb24-14"><a href="#cb24-14"></a>    .rename(columns<span class="op">=</span>{<span class="st">'end'</span>:x_axis_name, <span class="st">'val'</span>:y_axis_name})</span>
+<span id="cb24-15"><a href="#cb24-15"></a>    .sort_values(by<span class="op">=</span>x_axis_name)</span>
+<span id="cb24-16"><a href="#cb24-16"></a>)</span>
+<span id="cb24-17"><a href="#cb24-17"></a></span>
+<span id="cb24-18"><a href="#cb24-18"></a>df_plot_data.tail(<span class="dv">10</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display" data-execution_count="33">
 
 <div>
 
@@ -737,11 +737,12 @@ Content Length: 2052 bytes</code></pre>
 </div>
 </div>
 </div>
-<div class="cell" data-execution_count="18">
-<div class="sourceCode cell-code" id="cb26"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb26-1"><a href="#cb26-1"></a>df_plot_data.plot(kind <span class="op">=</span> <span class="st">'bar'</span>, x <span class="op">=</span> x_axis_name, y <span class="op">=</span> y_axis_name, figsize<span class="op">=</span>(<span class="dv">12</span>, <span class="dv">5</span>), title <span class="op">=</span> <span class="ss">f"</span><span class="sc">{</span>ticker<span class="sc">}</span><span class="ss"> </span><span class="sc">{</span>tag<span class="sc">}</span><span class="ss">"</span>)</span>
-<span id="cb26-2"><a href="#cb26-2"></a>plt.show()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell" data-execution_count="17">
+<div class="sourceCode cell-code" id="cb25"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb25-1"><a href="#cb25-1"></a>df_plot_data.plot(kind <span class="op">=</span> <span class="st">'bar'</span>, x <span class="op">=</span> x_axis_name, y <span class="op">=</span> y_axis_name, </span>
+<span id="cb25-2"><a href="#cb25-2"></a>                  figsize<span class="op">=</span>(<span class="dv">11</span>, <span class="dv">6</span>), title <span class="op">=</span> <span class="ss">f"</span><span class="sc">{</span>ticker<span class="sc">}</span><span class="ss"> </span><span class="sc">{</span>tag<span class="sc">}</span><span class="ss">"</span>)</span>
+<span id="cb25-3"><a href="#cb25-3"></a>plt.show()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-display">
-<p><img src="stock_ticker_data_files/figure-html/cell-19-output-1.png" width="947" height="514"></p>
+<p><img src="stock_ticker_data_files/figure-html/cell-18-output-1.png" width="872" height="588"></p>
 </div>
 </div>
 </section>

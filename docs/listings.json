@@ -1,29 +1,9 @@
 [
   {
-    "listing": "/posts/post-with-code/index.html",
-    "items": []
-  },
-  {
-    "listing": "/posts/welcome/index.html",
-    "items": []
-  },
-  {
-    "listing": "/posts/intro-to-pyspark/Intro-to-Pyspark.html",
-    "items": []
-  },
-  {
     "listing": "/index.html",
     "items": [
       "/posts/stock_ticker_data/stock_ticker_data.html"
     ]
-  },
-  {
-    "listing": "/posts/tmp/Untitled.html",
-    "items": []
-  },
-  {
-    "listing": "/posts/tmp/test.html",
-    "items": []
   },
   {
     "listing": "/posts/stock_ticker_data/stock_ticker_data.html",
