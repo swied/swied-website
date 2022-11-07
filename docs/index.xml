@@ -12,7 +12,7 @@
 <generator>quarto-1.2.258</generator>
 <lastBuildDate>Sun, 06 Nov 2022 07:00:00 GMT</lastBuildDate>
 <item>
-  <title>Get Financial Data by Stock Ticker From the data.sec.gov API</title>
+  <title>Get Financial Data by Stock Ticker From data.sec.gov API</title>
   <dc:creator>Scott Wied</dc:creator>
   <link>htts://www.swied.com/posts/stock_ticker_data/stock_ticker_data.html</link>
   <description><![CDATA[ 
@@ -20,7 +20,6 @@
 
 
 
-<div class="column-page-right">
 <section id="import-python-packages" class="level2" data-number="1">
 <h2 data-number="1" class="anchored" data-anchor-id="import-python-packages"><span class="header-section-number">1</span> Import python packages</h2>
 <div class="cell" data-execution_count="1">
@@ -39,22 +38,26 @@
 <div class="sourceCode cell-code" id="cb2" style="background: #f1f3f5;"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb2-1"><span class="co" style="color: #5E5E5E;"># Which company do you wish to track?</span></span>
 <span id="cb2-2">ticker <span class="op" style="color: #5E5E5E;">=</span> <span class="st" style="color: #20794D;">'AAPL'</span></span>
 <span id="cb2-3"></span>
-<span id="cb2-4"><span class="co" style="color: #5E5E5E;"># An email address needs to be included in the URL of the API call</span></span>
+<span id="cb2-4"><span class="co" style="color: #5E5E5E;"># An email address needs to be included in the URL of the API</span></span>
 <span id="cb2-5">email_address <span class="op" style="color: #5E5E5E;">=</span> <span class="st" style="color: #20794D;">'your-email@example.com'</span>  </span></code></pre></div>
 </div>
 </section>
 <section id="find-the-cik-number-for-the-chosen-stock-ticker" class="level2" data-number="3">
 <h2 data-number="3" class="anchored" data-anchor-id="find-the-cik-number-for-the-chosen-stock-ticker"><span class="header-section-number">3</span> Find the CIK number for the chosen stock ticker</h2>
-<section id="request-ticker-exchange-data-from-the-sec.gov-api" class="level3" data-number="3.1">
-<h3 data-number="3.1" class="anchored" data-anchor-id="request-ticker-exchange-data-from-the-sec.gov-api"><span class="header-section-number">3.1</span> Request ticker exchange data from the sec.gov API</h3>
+<section id="query-the-sec.gov-api" class="level3" data-number="3.1">
+<h3 data-number="3.1" class="anchored" data-anchor-id="query-the-sec.gov-api"><span class="header-section-number">3.1</span> Query the sec.gov API</h3>
 <div class="cell" data-execution_count="3">
 <div class="sourceCode cell-code" id="cb3" style="background: #f1f3f5;"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb3-1"><span class="co" style="color: #5E5E5E;"># Run the API request   </span></span>
-<span id="cb3-2">request_info <span class="op" style="color: #5E5E5E;">=</span> requests.get(<span class="st" style="color: #20794D;">'https://sec.gov/files/company_tickers_exchange.json'</span>)</span>
-<span id="cb3-3"></span>
-<span id="cb3-4"><span class="co" style="color: #5E5E5E;"># Print the returned status code (200 is good, 404 is bad) and other content info.</span></span>
-<span id="cb3-5"><span class="bu" style="color: null;">print</span>(<span class="st" style="color: #20794D;">"Request status code:"</span>, request_info.status_code)</span>
-<span id="cb3-6"><span class="bu" style="color: null;">print</span>(<span class="st" style="color: #20794D;">"Content Type:"</span>, request_info.headers[<span class="st" style="color: #20794D;">'Content-Type'</span>])</span>
-<span id="cb3-7"><span class="bu" style="color: null;">print</span>(<span class="st" style="color: #20794D;">"Content Length:"</span>, request_info.headers[<span class="st" style="color: #20794D;">'Content-Length'</span>], <span class="st" style="color: #20794D;">'bytes'</span>)</span></code></pre></div>
+<span id="cb3-2">request_info <span class="op" style="color: #5E5E5E;">=</span> (</span>
+<span id="cb3-3">    requests</span>
+<span id="cb3-4">    .get(<span class="st" style="color: #20794D;">'https://sec.gov/files/company_tickers_exchange.json'</span>)</span>
+<span id="cb3-5">)</span>
+<span id="cb3-6"></span>
+<span id="cb3-7"><span class="co" style="color: #5E5E5E;"># Print the returned status code (200 is good, 404 is bad)</span></span>
+<span id="cb3-8"><span class="bu" style="color: null;">print</span>(<span class="st" style="color: #20794D;">"Request status code:"</span>, request_info.status_code)</span>
+<span id="cb3-9"><span class="bu" style="color: null;">print</span>(<span class="st" style="color: #20794D;">"Content Type:"</span>, request_info.headers[<span class="st" style="color: #20794D;">'Content-Type'</span>])</span>
+<span id="cb3-10"><span class="bu" style="color: null;">print</span>(<span class="st" style="color: #20794D;">"Content Length:"</span>, request_info.headers[<span class="st" style="color: #20794D;">'Content-Length'</span>], </span>
+<span id="cb3-11">      <span class="st" style="color: #20794D;">'bytes'</span>)</span></code></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>Request status code: 200
 Content Type: application/json
@@ -62,14 +65,14 @@ Content Length: 214545 bytes</code></pre>
 </div>
 </div>
 <div class="cell" data-execution_count="4">
-<div class="sourceCode cell-code" id="cb5" style="background: #f1f3f5;"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb5-1"><span class="co" style="color: #5E5E5E;"># Put the requested content into a Python dict object using the `.json()` method</span></span>
+<div class="sourceCode cell-code" id="cb5" style="background: #f1f3f5;"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb5-1"><span class="co" style="color: #5E5E5E;"># Convert json data to Python dict format</span></span>
 <span id="cb5-2">request_data <span class="op" style="color: #5E5E5E;">=</span> request_info.json()</span></code></pre></div>
 </div>
 </section>
 <section id="explore-the-data-that-was-returned" class="level3" data-number="3.2">
 <h3 data-number="3.2" class="anchored" data-anchor-id="explore-the-data-that-was-returned"><span class="header-section-number">3.2</span> Explore the data that was returned</h3>
 <div class="cell" data-execution_count="5">
-<div class="sourceCode cell-code" id="cb6" style="background: #f1f3f5;"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb6-1"><span class="co" style="color: #5E5E5E;"># We know that request_data is a dictionary, so let's list all of its keys. </span></span>
+<div class="sourceCode cell-code" id="cb6" style="background: #f1f3f5;"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb6-1"><span class="co" style="color: #5E5E5E;"># List the dictionary keys </span></span>
 <span id="cb6-2"><span class="bu" style="color: null;">print</span>(<span class="st" style="color: #20794D;">"request_data:"</span>, request_data.keys())</span></code></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>request_data: dict_keys(['fields', 'data'])</code></pre>
@@ -77,13 +80,13 @@ Content Length: 214545 bytes</code></pre>
 </div>
 <div class="cell" data-execution_count="6">
 <div class="sourceCode cell-code" id="cb8" style="background: #f1f3f5;"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb8-1">request_data[<span class="st" style="color: #20794D;">'fields'</span>]</span></code></pre></div>
-<div class="cell-output cell-output-display" data-execution_count="23">
+<div class="cell-output cell-output-display" data-execution_count="125">
 <pre><code>['cik', 'name', 'ticker', 'exchange']</code></pre>
 </div>
 </div>
 <div class="cell" data-execution_count="7">
 <div class="sourceCode cell-code" id="cb10" style="background: #f1f3f5;"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb10-1">request_data[<span class="st" style="color: #20794D;">'data'</span>][<span class="dv" style="color: #AD0000;">0</span>:<span class="dv" style="color: #AD0000;">10</span>]</span></code></pre></div>
-<div class="cell-output cell-output-display" data-execution_count="24">
+<div class="cell-output cell-output-display" data-execution_count="126">
 <pre><code>[[320193, 'Apple Inc.', 'AAPL', 'Nasdaq'],
  [789019, 'MICROSOFT CORP', 'MSFT', 'Nasdaq'],
  [1018724, 'AMAZON COM INC', 'AMZN', 'Nasdaq'],
@@ -109,7 +112,7 @@ Content Length: 214545 bytes</code></pre>
 <span id="cb12-7"></span>
 <span id="cb12-8"><span class="co" style="color: #5E5E5E;"># Display the top few rows</span></span>
 <span id="cb12-9">df_tickers.head()</span></code></pre></div>
-<div class="cell-output cell-output-display" data-execution_count="25">
+<div class="cell-output cell-output-display" data-execution_count="127">
 
 <div>
 
@@ -167,7 +170,7 @@ Content Length: 214545 bytes</code></pre>
 <div class="cell" data-execution_count="9">
 <div class="sourceCode cell-code" id="cb13" style="background: #f1f3f5;"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb13-1"><span class="co" style="color: #5E5E5E;"># Slice the dataframe to show only the row where ticker=='AAPL'</span></span>
 <span id="cb13-2">df_tickers.query(<span class="ss" style="color: #20794D;">f"ticker=='</span><span class="sc" style="color: #5E5E5E;">{</span>ticker<span class="sc" style="color: #5E5E5E;">}</span><span class="ss" style="color: #20794D;">'"</span>)</span></code></pre></div>
-<div class="cell-output cell-output-display" data-execution_count="26">
+<div class="cell-output cell-output-display" data-execution_count="128">
 
 <div>
 
@@ -221,26 +224,26 @@ CIK: CIK0000320193</code></pre>
 </div>
 </section>
 </section>
-<section id="get-financial-data-from-data.sec.gov-api-for-a-specific-xbrl-line-item-tag" class="level2" data-number="4">
-<h2 data-number="4" class="anchored" data-anchor-id="get-financial-data-from-data.sec.gov-api-for-a-specific-xbrl-line-item-tag"><span class="header-section-number">4</span> Get financial data from data.sec.gov api for a specific XBRL line item tag</h2>
+<section id="get-financial-data-from-the-data.sec.gov-api-for-a-specific-xbrl-line-item-tag" class="level2" data-number="4">
+<h2 data-number="4" class="anchored" data-anchor-id="get-financial-data-from-the-data.sec.gov-api-for-a-specific-xbrl-line-item-tag"><span class="header-section-number">4</span> Get financial data from the <a href="https://www.sec.gov/edgar/sec-api-documentation">data.sec.gov api</a> for a specific <a href="https://xbrl.us/data-rule/dqc_0015-lepr/">XBRL line item tag</a></h2>
 <div class="cell" data-execution_count="12">
 <div class="sourceCode cell-code" id="cb17" style="background: #f1f3f5;"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb17-1"><span class="co" style="color: #5E5E5E;"># Build up the request URL</span></span>
 <span id="cb17-2">cik <span class="op" style="color: #5E5E5E;">=</span> get_cik_string(df_tickers, ticker)</span>
 <span id="cb17-3">tag <span class="op" style="color: #5E5E5E;">=</span> <span class="st" style="color: #20794D;">'Assets'</span></span>
-<span id="cb17-4">url <span class="op" style="color: #5E5E5E;">=</span> <span class="ss" style="color: #20794D;">f"https://data.sec.gov/api/xbrl/companyconcept/</span><span class="sc" style="color: #5E5E5E;">{</span>cik<span class="sc" style="color: #5E5E5E;">}</span><span class="ss" style="color: #20794D;">/us-gaap/</span><span class="sc" style="color: #5E5E5E;">{</span>tag<span class="sc" style="color: #5E5E5E;">}</span><span class="ss" style="color: #20794D;">.json"</span></span>
-<span id="cb17-5"></span>
-<span id="cb17-6"><span class="bu" style="color: null;">print</span>(<span class="st" style="color: #20794D;">"URL:"</span>, url)</span>
-<span id="cb17-7"></span>
-<span id="cb17-8"><span class="co" style="color: #5E5E5E;"># Run the API request   </span></span>
-<span id="cb17-9">request_tag_data <span class="op" style="color: #5E5E5E;">=</span> requests.get(url, headers<span class="op" style="color: #5E5E5E;">=</span>{<span class="st" style="color: #20794D;">'User-Agent'</span>: email_address})</span>
-<span id="cb17-10"></span>
-<span id="cb17-11"><span class="co" style="color: #5E5E5E;"># Print the status code (200 is good, 404 is bad), and other content info.</span></span>
-<span id="cb17-12"><span class="bu" style="color: null;">print</span>(<span class="st" style="color: #20794D;">"Request status code:"</span>, request_tag_data.status_code)</span>
-<span id="cb17-13"><span class="bu" style="color: null;">print</span>(<span class="st" style="color: #20794D;">"Content Type:"</span>, request_tag_data.headers[<span class="st" style="color: #20794D;">'Content-Type'</span>])</span>
-<span id="cb17-14"><span class="bu" style="color: null;">print</span>(<span class="st" style="color: #20794D;">"Content Length:"</span>, request_tag_data.headers[<span class="st" style="color: #20794D;">'Content-Length'</span>], <span class="st" style="color: #20794D;">'bytes'</span>)</span></code></pre></div>
-<div class="cell-output cell-output-stdout">
-<pre><code>URL: https://data.sec.gov/api/xbrl/companyconcept/CIK0000320193/us-gaap/Assets.json</code></pre>
-</div>
+<span id="cb17-4">domain <span class="op" style="color: #5E5E5E;">=</span> <span class="st" style="color: #20794D;">'https://data.sec.gov'</span></span>
+<span id="cb17-5">url <span class="op" style="color: #5E5E5E;">=</span> <span class="ss" style="color: #20794D;">f"</span><span class="sc" style="color: #5E5E5E;">{</span>domain<span class="sc" style="color: #5E5E5E;">}</span><span class="ss" style="color: #20794D;">/api/xbrl/companyconcept/</span><span class="sc" style="color: #5E5E5E;">{</span>cik<span class="sc" style="color: #5E5E5E;">}</span><span class="ss" style="color: #20794D;">/us-gaap/</span><span class="sc" style="color: #5E5E5E;">{</span>tag<span class="sc" style="color: #5E5E5E;">}</span><span class="ss" style="color: #20794D;">.json"</span></span>
+<span id="cb17-6"></span>
+<span id="cb17-7"><span class="co" style="color: #5E5E5E;"># Run the API request   </span></span>
+<span id="cb17-8">request_tag_data <span class="op" style="color: #5E5E5E;">=</span> (requests</span>
+<span id="cb17-9">                    .get(url, </span>
+<span id="cb17-10">                         headers<span class="op" style="color: #5E5E5E;">=</span>{<span class="st" style="color: #20794D;">'User-Agent'</span>: email_address})</span>
+<span id="cb17-11">                   )</span>
+<span id="cb17-12"></span>
+<span id="cb17-13"><span class="co" style="color: #5E5E5E;"># Print the status code (200 is good, 404 is bad)</span></span>
+<span id="cb17-14"><span class="bu" style="color: null;">print</span>(<span class="st" style="color: #20794D;">"Request status code:"</span>, request_tag_data.status_code)</span>
+<span id="cb17-15"><span class="bu" style="color: null;">print</span>(<span class="st" style="color: #20794D;">"Content Type:"</span>, request_tag_data.headers[<span class="st" style="color: #20794D;">'Content-Type'</span>])</span>
+<span id="cb17-16"><span class="bu" style="color: null;">print</span>(<span class="st" style="color: #20794D;">"Content Length:"</span>, </span>
+<span id="cb17-17">      request_tag_data.headers[<span class="st" style="color: #20794D;">'Content-Length'</span>], <span class="st" style="color: #20794D;">'bytes'</span>)</span></code></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>Request status code: 200
 Content Type: application/json
@@ -248,9 +251,9 @@ Content Length: 2052 bytes</code></pre>
 </div>
 </div>
 <div class="cell" data-execution_count="13">
-<div class="sourceCode cell-code" id="cb20" style="background: #f1f3f5;"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb20-1">tag_data <span class="op" style="color: #5E5E5E;">=</span> request_tag_data.json()</span>
-<span id="cb20-2"></span>
-<span id="cb20-3">pprint(tag_data, depth<span class="op" style="color: #5E5E5E;">=</span><span class="dv" style="color: #AD0000;">2</span>)</span></code></pre></div>
+<div class="sourceCode cell-code" id="cb19" style="background: #f1f3f5;"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb19-1">tag_data <span class="op" style="color: #5E5E5E;">=</span> request_tag_data.json()</span>
+<span id="cb19-2"></span>
+<span id="cb19-3">pprint(tag_data, depth<span class="op" style="color: #5E5E5E;">=</span><span class="dv" style="color: #AD0000;">2</span>)</span></code></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>{'cik': 320193,
  'description': 'Sum of the carrying amounts as of the balance sheet date of '
@@ -265,11 +268,11 @@ Content Length: 2052 bytes</code></pre>
 </div>
 </div>
 <div class="cell" data-execution_count="14">
-<div class="sourceCode cell-code" id="cb22" style="background: #f1f3f5;"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb22-1">df_tag_data <span class="op" style="color: #5E5E5E;">=</span> pd.DataFrame.from_dict(tag_data[<span class="st" style="color: #20794D;">'units'</span>][<span class="st" style="color: #20794D;">'USD'</span>])</span></code></pre></div>
+<div class="sourceCode cell-code" id="cb21" style="background: #f1f3f5;"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb21-1">df_tag_data <span class="op" style="color: #5E5E5E;">=</span> pd.DataFrame.from_dict(tag_data[<span class="st" style="color: #20794D;">'units'</span>][<span class="st" style="color: #20794D;">'USD'</span>])</span></code></pre></div>
 </div>
 <div class="cell" data-execution_count="15">
-<div class="sourceCode cell-code" id="cb23" style="background: #f1f3f5;"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb23-1">df_tag_data</span></code></pre></div>
-<div class="cell-output cell-output-display" data-execution_count="32">
+<div class="sourceCode cell-code" id="cb22" style="background: #f1f3f5;"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb22-1">df_tag_data</span></code></pre></div>
+<div class="cell-output cell-output-display" data-execution_count="134">
 
 <div>
 
@@ -415,26 +418,31 @@ Content Length: 2052 bytes</code></pre>
 </div>
 </div>
 </div>
+</section>
+<section id="plot-trend-data" class="level2" data-number="5">
+<h2 data-number="5" class="anchored" data-anchor-id="plot-trend-data"><span class="header-section-number">5</span> Plot trend data</h2>
+<section id="create-a-table-of-plot-data" class="level3" data-number="5.1">
+<h3 data-number="5.1" class="anchored" data-anchor-id="create-a-table-of-plot-data"><span class="header-section-number">5.1</span> Create a table of plot data</h3>
 <div class="cell" data-execution_count="16">
-<div class="sourceCode cell-code" id="cb24" style="background: #f1f3f5;"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb24-1"><span class="co" style="color: #5E5E5E;"># Filter rows to only those with current year (CY) labels</span></span>
-<span id="cb24-2">starts_with_cy <span class="op" style="color: #5E5E5E;">=</span> <span class="kw" style="color: #003B4F;">lambda</span> x: <span class="bu" style="color: null;">bool</span>(<span class="bu" style="color: null;">isinstance</span>(re.search(<span class="vs" style="color: #20794D;">r'^CY'</span>, x), re.Match))</span>
-<span id="cb24-3">x_axis_name <span class="op" style="color: #5E5E5E;">=</span> <span class="st" style="color: #20794D;">'End Date'</span></span>
-<span id="cb24-4">y_axis_name <span class="op" style="color: #5E5E5E;">=</span> <span class="ss" style="color: #20794D;">f'</span><span class="sc" style="color: #5E5E5E;">{</span>tag<span class="sc" style="color: #5E5E5E;">}</span><span class="ss" style="color: #20794D;"> (USD in Billions)'</span></span>
-<span id="cb24-5"></span>
-<span id="cb24-6">df_plot_data <span class="op" style="color: #5E5E5E;">=</span> (</span>
-<span id="cb24-7">    df_tag_data</span>
-<span id="cb24-8">    .query(<span class="st" style="color: #20794D;">"form == '10-Q'"</span>)</span>
-<span id="cb24-9">    .assign(yr_mon      <span class="op" style="color: #5E5E5E;">=</span> <span class="kw" style="color: #003B4F;">lambda</span> x: [<span class="ss" style="color: #20794D;">f"</span><span class="sc" style="color: #5E5E5E;">{</span>y[<span class="dv" style="color: #AD0000;">0</span>]<span class="sc" style="color: #5E5E5E;">}</span><span class="ss" style="color: #20794D;">-</span><span class="sc" style="color: #5E5E5E;">{</span>y[<span class="dv" style="color: #AD0000;">1</span>]<span class="sc" style="color: #5E5E5E;">}</span><span class="ss" style="color: #20794D;">"</span> <span class="cf" style="color: #003B4F;">for</span> y <span class="kw" style="color: #003B4F;">in</span> <span class="bu" style="color: null;">zip</span>(x.fy, x.fp)] )</span>
-<span id="cb24-10">    .assign(filter_flag <span class="op" style="color: #5E5E5E;">=</span> <span class="kw" style="color: #003B4F;">lambda</span> x: [starts_with_cy(<span class="bu" style="color: null;">str</span>(y)) <span class="cf" style="color: #003B4F;">for</span> y <span class="kw" style="color: #003B4F;">in</span> x.frame])</span>
-<span id="cb24-11">    .query(<span class="st" style="color: #20794D;">"filter_flag==True"</span>)</span>
-<span id="cb24-12">    .<span class="bu" style="color: null;">filter</span>([<span class="st" style="color: #20794D;">'end'</span>, <span class="st" style="color: #20794D;">'val'</span>])</span>
-<span id="cb24-13">    .assign(val <span class="op" style="color: #5E5E5E;">=</span> <span class="kw" style="color: #003B4F;">lambda</span> x: x.val<span class="op" style="color: #5E5E5E;">/</span><span class="dv" style="color: #AD0000;">1000000000</span>)</span>
-<span id="cb24-14">    .rename(columns<span class="op" style="color: #5E5E5E;">=</span>{<span class="st" style="color: #20794D;">'end'</span>:x_axis_name, <span class="st" style="color: #20794D;">'val'</span>:y_axis_name})</span>
-<span id="cb24-15">    .sort_values(by<span class="op" style="color: #5E5E5E;">=</span>x_axis_name)</span>
-<span id="cb24-16">)</span>
-<span id="cb24-17"></span>
-<span id="cb24-18">df_plot_data.tail(<span class="dv" style="color: #AD0000;">10</span>)</span></code></pre></div>
-<div class="cell-output cell-output-display" data-execution_count="33">
+<div class="sourceCode cell-code" id="cb23" style="background: #f1f3f5;"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb23-1"><span class="co" style="color: #5E5E5E;"># Filter rows to only those with current year (CY) labels</span></span>
+<span id="cb23-2">starts_with_cy <span class="op" style="color: #5E5E5E;">=</span> <span class="kw" style="color: #003B4F;">lambda</span> x: <span class="bu" style="color: null;">bool</span>(<span class="bu" style="color: null;">isinstance</span>(re.search(<span class="vs" style="color: #20794D;">r'^CY'</span>, x), re.Match))</span>
+<span id="cb23-3">x_axis_name <span class="op" style="color: #5E5E5E;">=</span> <span class="st" style="color: #20794D;">'End Date'</span></span>
+<span id="cb23-4">y_axis_name <span class="op" style="color: #5E5E5E;">=</span> <span class="ss" style="color: #20794D;">f'</span><span class="sc" style="color: #5E5E5E;">{</span>tag<span class="sc" style="color: #5E5E5E;">}</span><span class="ss" style="color: #20794D;"> (USD in Billions)'</span></span>
+<span id="cb23-5"></span>
+<span id="cb23-6">df_plot_data <span class="op" style="color: #5E5E5E;">=</span> (</span>
+<span id="cb23-7">    df_tag_data</span>
+<span id="cb23-8">    .query(<span class="st" style="color: #20794D;">"form == '10-Q'"</span>)</span>
+<span id="cb23-9">    .assign(yr_mon <span class="op" style="color: #5E5E5E;">=</span> <span class="kw" style="color: #003B4F;">lambda</span> x: [<span class="ss" style="color: #20794D;">f"</span><span class="sc" style="color: #5E5E5E;">{</span>y[<span class="dv" style="color: #AD0000;">0</span>]<span class="sc" style="color: #5E5E5E;">}</span><span class="ss" style="color: #20794D;">-</span><span class="sc" style="color: #5E5E5E;">{</span>y[<span class="dv" style="color: #AD0000;">1</span>]<span class="sc" style="color: #5E5E5E;">}</span><span class="ss" style="color: #20794D;">"</span> <span class="cf" style="color: #003B4F;">for</span> y <span class="kw" style="color: #003B4F;">in</span> <span class="bu" style="color: null;">zip</span>(x.fy, x.fp)] )</span>
+<span id="cb23-10">    .assign(filter_flag <span class="op" style="color: #5E5E5E;">=</span> <span class="kw" style="color: #003B4F;">lambda</span> x: [starts_with_cy(<span class="bu" style="color: null;">str</span>(y)) <span class="cf" style="color: #003B4F;">for</span> y <span class="kw" style="color: #003B4F;">in</span> x.frame])</span>
+<span id="cb23-11">    .query(<span class="st" style="color: #20794D;">"filter_flag==True"</span>)</span>
+<span id="cb23-12">    .<span class="bu" style="color: null;">filter</span>([<span class="st" style="color: #20794D;">'end'</span>, <span class="st" style="color: #20794D;">'val'</span>])</span>
+<span id="cb23-13">    .assign(val <span class="op" style="color: #5E5E5E;">=</span> <span class="kw" style="color: #003B4F;">lambda</span> x: x.val<span class="op" style="color: #5E5E5E;">/</span><span class="dv" style="color: #AD0000;">1000000000</span>)</span>
+<span id="cb23-14">    .rename(columns<span class="op" style="color: #5E5E5E;">=</span>{<span class="st" style="color: #20794D;">'end'</span>:x_axis_name, <span class="st" style="color: #20794D;">'val'</span>:y_axis_name})</span>
+<span id="cb23-15">    .sort_values(by<span class="op" style="color: #5E5E5E;">=</span>x_axis_name)</span>
+<span id="cb23-16">)</span>
+<span id="cb23-17"></span>
+<span id="cb23-18">df_plot_data.tail(<span class="dv" style="color: #AD0000;">10</span>)</span></code></pre></div>
+<div class="cell-output cell-output-display" data-execution_count="135">
 
 <div>
 
@@ -502,19 +510,22 @@ Content Length: 2052 bytes</code></pre>
 </div>
 </div>
 </div>
-<div class="cell" data-execution_count="17">
-<div class="sourceCode cell-code" id="cb25" style="background: #f1f3f5;"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb25-1">df_plot_data.plot(kind <span class="op" style="color: #5E5E5E;">=</span> <span class="st" style="color: #20794D;">'bar'</span>, x <span class="op" style="color: #5E5E5E;">=</span> x_axis_name, y <span class="op" style="color: #5E5E5E;">=</span> y_axis_name, </span>
-<span id="cb25-2">                  figsize<span class="op" style="color: #5E5E5E;">=</span>(<span class="dv" style="color: #AD0000;">11</span>, <span class="dv" style="color: #AD0000;">6</span>), title <span class="op" style="color: #5E5E5E;">=</span> <span class="ss" style="color: #20794D;">f"</span><span class="sc" style="color: #5E5E5E;">{</span>ticker<span class="sc" style="color: #5E5E5E;">}</span><span class="ss" style="color: #20794D;"> </span><span class="sc" style="color: #5E5E5E;">{</span>tag<span class="sc" style="color: #5E5E5E;">}</span><span class="ss" style="color: #20794D;">"</span>)</span>
-<span id="cb25-3">plt.show()</span></code></pre></div>
-<div class="cell-output cell-output-display">
-<p><img src="htts://www.swied.com/posts/stock_ticker_data/stock_ticker_data_files/figure-html/cell-18-output-1.png" width="872" height="588"></p>
-</div>
-</div>
 </section>
+<section id="draw-a-line-chart" class="level3" data-number="5.2">
+<h3 data-number="5.2" class="anchored" data-anchor-id="draw-a-line-chart"><span class="header-section-number">5.2</span> Draw a line chart</h3>
+<div class="cell" data-execution_count="17">
+<div class="sourceCode cell-code" id="cb24" style="background: #f1f3f5;"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb24-1">df_plot_data.plot(kind <span class="op" style="color: #5E5E5E;">=</span> <span class="st" style="color: #20794D;">'line'</span>, x <span class="op" style="color: #5E5E5E;">=</span> x_axis_name, y <span class="op" style="color: #5E5E5E;">=</span> y_axis_name, </span>
+<span id="cb24-2">                  figsize<span class="op" style="color: #5E5E5E;">=</span>(<span class="dv" style="color: #AD0000;">10</span>, <span class="dv" style="color: #AD0000;">6</span>), title <span class="op" style="color: #5E5E5E;">=</span> <span class="ss" style="color: #20794D;">f"</span><span class="sc" style="color: #5E5E5E;">{</span>ticker<span class="sc" style="color: #5E5E5E;">}</span><span class="ss" style="color: #20794D;"> </span><span class="sc" style="color: #5E5E5E;">{</span>tag<span class="sc" style="color: #5E5E5E;">}</span><span class="ss" style="color: #20794D;">"</span>)</span>
+<span id="cb24-3">plt.show()</span></code></pre></div>
+<div class="cell-output cell-output-display">
+<p><img src="htts://www.swied.com/posts/stock_ticker_data/stock_ticker_data_files/figure-html/cell-18-output-1.png" width="798" height="523"></p>
+</div>
 </div>
 
 
 
+</section>
+</section>
 
 <div class="quarto-listing quarto-listing-container-default" id="listing-listing">
 <div class="list quarto-listing-default">
