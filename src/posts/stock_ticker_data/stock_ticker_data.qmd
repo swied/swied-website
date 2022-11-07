@@ -1,6 +1,6 @@
 ---
-title: Get Financial Data by Stock Ticker From data.sec.gov API
-description: 'A notebook, with code, showing how to pull data from sec.gov web API’s'
+title: 'Get financial reporting data, by stock ticker, from the data.sec.gov API'
+description: 'A notebook, with code, showing how to pull data from a couple of sec.gov web API’s'
 author: Scott Wied
 date: 11/06/2022
 categories:

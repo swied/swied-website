@@ -12,7 +12,7 @@
 <generator>quarto-1.2.258</generator>
 <lastBuildDate>Sun, 06 Nov 2022 07:00:00 GMT</lastBuildDate>
 <item>
-  <title>Get Financial Data by Stock Ticker From data.sec.gov API</title>
+  <title>Get financial reporting data, by stock ticker, from the data.sec.gov API</title>
   <dc:creator>Scott Wied</dc:creator>
   <link>htts://www.swied.com/posts/stock_ticker_data/stock_ticker_data.html</link>
   <description><![CDATA[ 
@@ -80,13 +80,13 @@ Content Length: 214545 bytes</code></pre>
 </div>
 <div class="cell" data-execution_count="6">
 <div class="sourceCode cell-code" id="cb8" style="background: #f1f3f5;"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb8-1">request_data[<span class="st" style="color: #20794D;">'fields'</span>]</span></code></pre></div>
-<div class="cell-output cell-output-display" data-execution_count="125">
+<div class="cell-output cell-output-display" data-execution_count="57">
 <pre><code>['cik', 'name', 'ticker', 'exchange']</code></pre>
 </div>
 </div>
 <div class="cell" data-execution_count="7">
 <div class="sourceCode cell-code" id="cb10" style="background: #f1f3f5;"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb10-1">request_data[<span class="st" style="color: #20794D;">'data'</span>][<span class="dv" style="color: #AD0000;">0</span>:<span class="dv" style="color: #AD0000;">10</span>]</span></code></pre></div>
-<div class="cell-output cell-output-display" data-execution_count="126">
+<div class="cell-output cell-output-display" data-execution_count="58">
 <pre><code>[[320193, 'Apple Inc.', 'AAPL', 'Nasdaq'],
  [789019, 'MICROSOFT CORP', 'MSFT', 'Nasdaq'],
  [1018724, 'AMAZON COM INC', 'AMZN', 'Nasdaq'],
@@ -112,7 +112,7 @@ Content Length: 214545 bytes</code></pre>
 <span id="cb12-7"></span>
 <span id="cb12-8"><span class="co" style="color: #5E5E5E;"># Display the top few rows</span></span>
 <span id="cb12-9">df_tickers.head()</span></code></pre></div>
-<div class="cell-output cell-output-display" data-execution_count="127">
+<div class="cell-output cell-output-display" data-execution_count="59">
 
 <div>
 
@@ -170,7 +170,7 @@ Content Length: 214545 bytes</code></pre>
 <div class="cell" data-execution_count="9">
 <div class="sourceCode cell-code" id="cb13" style="background: #f1f3f5;"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb13-1"><span class="co" style="color: #5E5E5E;"># Slice the dataframe to show only the row where ticker=='AAPL'</span></span>
 <span id="cb13-2">df_tickers.query(<span class="ss" style="color: #20794D;">f"ticker=='</span><span class="sc" style="color: #5E5E5E;">{</span>ticker<span class="sc" style="color: #5E5E5E;">}</span><span class="ss" style="color: #20794D;">'"</span>)</span></code></pre></div>
-<div class="cell-output cell-output-display" data-execution_count="128">
+<div class="cell-output cell-output-display" data-execution_count="60">
 
 <div>
 
@@ -272,7 +272,7 @@ Content Length: 2052 bytes</code></pre>
 </div>
 <div class="cell" data-execution_count="15">
 <div class="sourceCode cell-code" id="cb22" style="background: #f1f3f5;"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb22-1">df_tag_data</span></code></pre></div>
-<div class="cell-output cell-output-display" data-execution_count="134">
+<div class="cell-output cell-output-display" data-execution_count="66">
 
 <div>
 
@@ -442,7 +442,7 @@ Content Length: 2052 bytes</code></pre>
 <span id="cb23-16">)</span>
 <span id="cb23-17"></span>
 <span id="cb23-18">df_plot_data.tail(<span class="dv" style="color: #AD0000;">10</span>)</span></code></pre></div>
-<div class="cell-output cell-output-display" data-execution_count="135">
+<div class="cell-output cell-output-display" data-execution_count="67">
 
 <div>
 
