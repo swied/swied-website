@@ -8,13 +8,13 @@
 <title>Scott&#39;s Data Science Blog</title>
 <link>htts://www.swied.com/posts/make-a-ringtone-sound/make-a-ringtone-sound.html</link>
 <atom:link href="htts://www.swied.com/posts/make-a-ringtone-sound/make-a-ringtone-sound.xml" rel="self" type="application/rss+xml"/>
-<description>The US ring is the combination of two frequencies (400 and 480 Hz).  This notebook shows how to create the audio for this ring tone.</description>
+<description>The old US ringtone is the combination of two frequencies (400 and 480 Hz).  This notebook shows how to create the audio for this ringtone.</description>
 <image>
 <url>htts://www.swied.com/image.png</url>
 <title>Scott&#39;s Data Science Blog</title>
 <link>htts://www.swied.com/posts/make-a-ringtone-sound/make-a-ringtone-sound.html</link>
 </image>
 <generator>quarto-1.2.258</generator>
-<lastBuildDate>Thu, 10 Nov 2022 01:37:18 GMT</lastBuildDate>
+<lastBuildDate>Thu, 10 Nov 2022 19:46:52 GMT</lastBuildDate>
 </channel>
 </rss>

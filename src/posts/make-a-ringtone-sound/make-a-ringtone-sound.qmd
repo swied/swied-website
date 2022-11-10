@@ -1,6 +1,6 @@
 ---
-title: Play the audio for a US ring tone
-description: The US ring is the combination of two frequencies (400 and 480 Hz).  This notebook shows how to create the audio for this ring tone.
+title: Play the audio for the old US ringtone
+description: The old US ringtone is the combination of two frequencies (400 and 480 Hz).  This notebook shows how to create the audio for this ringtone.
 author: Scott Wied
 date: 11/09/2022
 categories:
@@ -22,187 +22,235 @@ execute:
 jupyter: python3
 ---
 
+## Introduction
+
+The old Bell telphone ringtone was a two second tone composed of the frequencies 400 Hz and 480 Hz. The tone was followed by a four second pause, and then repeated.  This ringtone continues to be used in the US with most mobile/landline carriers, and PBX systems.  Read more about this, and other international ringtones, at [https://en.wikipedia.org/wiki/Ringing_tone](https://en.wikipedia.org/wiki/Ringing_tone).
+
+Here is a recording of the US ringtone.
+
 ```{python}
-import math
-import matplotlib.pyplot as plt
-from scipy.io.wavfile import read, write
 from IPython.display import Audio
-import numpy as np
-import sympy as s
-import sympy.plotting.plot as sympy_plot
+
+Audio(url="https://upload.wikimedia.org/wikipedia/commons/c/cd/US_ringback_tone.ogg")
 ```
 
-https://en.wikipedia.org/wiki/Beat_(acoustics)
+Let's start with some basics before jumping into recreating this ringtone.  
 
-https://en.wikipedia.org/wiki/Superposition_principle
+## Basics of audio frequencies
 
-## Audio tone frequencies
+The [sound](https://en.wikipedia.org/wiki/Sound) we hear is produced by [longitudinal pressure waves](https://en.wikipedia.org/wiki/Longitudinal_wave) in air particles.  These waves cause your ear drum to vibrate.  A [pure tone](https://en.wikipedia.org/wiki/Pure_tone) is produced when you hear an unchanging frequency with a [sinusoidal waveform](https://en.wikipedia.org/wiki/Sine_wave). 
 
-Sound comes from longitudinal pressure waves of air particles.  Different audio tones have different wave frequencies.  A wave for a single frequency can be described by the following equation.
+The basic equation of a sinusoidal waveform:
 
 $y(t) = 
-    cos
+    sin
     \left({
         2 \pi f t
-    }\right)
-$
+    }\right)$
 
-Where, $y$ is the hieght of the wave (or volume), $t$ is the time value (seconds), and $f$ = wave frequency (Hertz).
+Where, $t$ is the time value, and $f$ = wave frequency ([Hertz](https://en.wikipedia.org/wiki/Hertz)).
 
-### Example using symboic equations
+### Symbolic equations in Python
 
-Let's use the Sympy package to define this equation as a symbolic expression.
+If you are exploring a problem it can be helpful to start with [symbolic computation](https://reference.wolfram.com/language/tutorial/AlgebraicCalculations.html).  The [Sympy package](https://www.sympy.org/) in Python allows you to operate on and simplify algebraic equations.  Then, when you are ready, you can easily convert your equations into numerical form (e.q., a Numpy array).
+
+Define sinusoidal waveform equation as a symbolic equation.
 
 ```{python}
+import sympy as s
+
 # Define variables as Sympy symbols
 t, f = s.symbols('t f')
 
-# Define Sympy expressions fy
-y = s.cos(2*s.pi*t*f)
-
-y
+# Define Sympy equation
+y = s.sin(2*s.pi*t*f)
 ```
 
-Let's use $f_1=256$Hz (Middle-c) for $f_1$, and $f_2=440$Hz (The A note above middle-c).
+```{python}
+# Use pretty print (pprint) to diplay this equation 
+s.pprint(y)
+```
+
+### Musical notes
+
+Let's use $f_1=256$Hz (Middle-c), and $f_2=440$Hz (The [A note above middle-c](https://en.wikipedia.org/wiki/A440_(pitch_standard))).
 
 ```{python}
-# Substitue values for f1 and f2 
-# in the Sympy expressions
+# Substitue values f1 and f2 in the equation for y
 y_at_256_hz = y.subs(f, 256)
 y_at_440_hz = y.subs(f, 440)
+```
 
-# Show the new expressions
+```{python}
+# Show the new equations
 s.pprint(y_at_256_hz)
 s.pprint(y_at_440_hz)
 ```
 
-Let's plot these example frequencies together on a graph.
+### Plot Middle-C and A-440 on a graph
+
+Let's plot these example frequencies together on a graph.  Note that we don't have to transform our equations into numerical lists before plotting them.  Sympy does this for us.  We just need to provide a plot range.
 
 ```{python}
 plot_range = (t, 0, 1/256)
 
+# Plot the curve for middle-c
 p = s.plot(
     y_at_256_hz, plot_range, 
     line_color='gray',
     title=f'Frequencies 256Hz, and 440Hz',
     show=False)
+
+# Add the curve for A-440 to the graph
 p.extend(s.plot(
     y_at_440_hz, plot_range, 
     line_color='green',
     show=False, adaptive=False))
+
+# Format the graph and display it
 p.size = (6,5)
 p.show()
 ```
 
-In order to listen to these two notes we need to create a time series array of values to run through the Audio function.
+### Convert Sympy equations to numeric lists
+
+In order to listen to these two notes we need to convert the equations into numerical time series.
 
 ```{python}
-y1 = s.lambdify(t, y_at_256_hz, "numpy")
-y2 = s.lambdify(t, y_at_440_hz, "numpy")
+# Convert our Sympy equations into 
+# Python lambda functions
+lambda_y_256 = s.lambdify(t, y_at_256_hz)
+lambda_y_440 = s.lambdify(t, y_at_440_hz)
+```
 
-f1, f2 = (256, 440)
-
-# Period of one cycle in seconds
-T1, T2 = (1/f1, 1/f2)
-
-
-n = 50 # Number of samples per cycle
-play_time = 3 # Number of seconds of play time
-
-# sampling period micro-seconds
-t1_delta = int(1e6*T1/n)
-t2_delta = int(1e6*T2/n) 
-
-# total play time in micro-seconds
+```{python}
+# Define numberic values for f1, and f2
+f_256, f_440 = (256, 440)
+# Number of samples per cycle
+n = 50
+# Number of seconds of play time
+play_time = 3
+# Sampling period in micro-seconds
+t_256_delta = int(1e6/n/f_256)
+t_440_delta = int(1e6/n/f_440) 
+# Total play time in micro-seconds
 t_max = int(play_time*1e6)
-
-ts1_range = range(0, t_max, t1_delta)
-ts2_range = range(0, t_max, t2_delta)
-
-ts1 = [y1(t/1e6) for t in ts1_range]
-ts2 = [y2(t/1e6) for t in ts2_range]
 ```
 
 ```{python}
-# show the first 5 values of ts1
-ts1[0:5]
+# Iterators for each time series
+ts_256_range = range(0, t_max, t_256_delta)
+ts_440_range = range(0, t_max, t_440_delta)
+
+# Generate numeric lists
+ts_256 = [lambda_y_256(t/1e6) 
+          for t 
+          in ts_256_range]
+ts2_440 = [lambda_y_440(t/1e6) 
+           for t 
+           in ts_440_range]
 ```
 
-### Play audio tones for middle-C and A
+### Play sounds for Middle-C and A-440
 
 ```{python}
-Audio(ts1, rate=256*50)
+Audio(ts_256, rate=f_256*n)
 ```
 
 ```{python}
 #| scrolled: true
-Audio(ts2, rate=440*50)
+Audio(ts2_440, rate=f_440*n)
 ```
 
-## Recreate the US ring tone for phone calls
+## Recreate the US ringtone
 
-In the United States, the ring tone for phones has historically been a two second tone composed of the frequencies 400 Hz and 480 Hz. The tone is followed by a four second pause, and then repeated until somebody answers.
+In the United States, the ringtone for phones has historically been a two second tone composed of the frequencies 400 Hz and 480 Hz. The tone is followed by a four second pause, and then repeated until somebody answers.
 
-Source: https://en.wikipedia.org/wiki/Ringing_tone#North_America,_South_Korea 
+### Acustic Equations
 
-When multiple sound waves overlap, their amplitudes add together. This is call superposition.
+When multiple sound waves overlap, their amplitudes add together. This is call [superposition](https://en.wikipedia.org/wiki/Superposition_principle).
 
 $y_{super}(t) = 
-    cos
+    sin
     \left({
         2 \pi f_1 t
     }\right)
     +
-    cos
+    sin
     \left({
         2 \pi f_2 t
     }\right)$
 
-Where the beat frequency ($f_{beat}$) is defined as... 
+Where the [beat frequency](https://en.wikipedia.org/wiki/Beat_(acoustics)) ($f_{beat}$) is defined as 
 
-$f_{beat} = \lvert f_1 - f_2 \rvert$.
+$f_{beat} = \lvert f_1 - f_2 \rvert$,
+
+and the beat waveform equation ($y_{beat}$) is defined as
+
+$y_{beat}(t) = 
+    2 \cdot
+    cos
+    \left({
+        2 \pi f_{beat} t
+    }\right)$
 
 ```{python}
-# Define the two frequencies
+# Define variables as Sympy symbols
+t, f = s.symbols('t f')
+
+# Define Sympy equations
+y = s.sin(2*s.pi*t*f)
+y_beat = 2*s.cos(s.pi*t*f)
+```
+
+```{python}
+# Define the two numeric frequencies
 f1 = 400
 f2 = 440
-
+# Calculate beat frequency
 f_beat = abs(f1-f2)
 
-# Define symbolic equations for the two freq.
-# tone, and the funtion for the beat.
+# Substitute in the numeric values
 y_super = y.subs(f, f1) + y.subs(f, f2)
-y_beat = 2*y.subs(f, s.Abs(f1-f2)/2)
+y_beat = y_beat.subs(f, f_beat)
+```
 
+```{python}
+# Pretty print the simplified equations
 s.pprint(y_super)
 s.pprint(y_beat)
 ```
+
+### Plot superpositioned waveforms on a graph
 
 Plot the superpositioned frequencies along with the curve for the beat frequency.
 
 ```{python}
 plot_range = (t, 0, 2/f_beat)
 
-# Plot the superpositioned tone function in gray
+# Plot the superpositioned waveform in gray
 p = s.plot(
     y_super, plot_range, line_color='gray',
-    title=f'Superposition of {f1}Hz, and {f2}Hz',
+    title=f'Superposition {f1}Hz, and {f2}Hz',
     show=False, adaptive=False)
 
 # Plot, on the same graph, the beat frequency 
 # function in green.
 p.extend(
-    s.plot(y_beat, plot_range, line_color='green',
-           show=False))
+    s.plot(y_beat, plot_range, 
+           line_color='green', 
+           show=False, adaptive=False))
 p.size = (6,5)
 p.show()
 ```
 
 Define a Numpy array as a time series of values from the symbolic equation $y_{super}(t)$.  Then we can feed the arry into the Audio function, and listen to it.
 
+### Convert Sympy equations to numeric lists
+
 ```{python}
 # Create a numpy array from y_super
-y3 = s.lambdify(t, y_super)
+y_ringtone = s.lambdify(t, y_super)
 
 # Period of the maximum frequency
 T_max = 1/max(f1,f2)
@@ -215,9 +263,18 @@ t_delta = int(1e6*T_max/n)  # micro-seconds
 t_max = int(play_time*1e6)  # micro-seconds
 
 # Create the time series as a list
-ts3 = [y3(t/1e6) for t in range(0,t_max, t_delta)]
-pause_4sec = [0.0 for t in range(0,2*t_max,t_delta)]
+ts_ringtone = [
+   y_ringtone(t/1e6) 
+   for t 
+   in range(0,t_max, t_delta)]
+
+pause_4sec = [
+    0.0
+    for t 
+    in range(0,2*t_max,t_delta)]
 ```
+
+### Play the ringtone sound
 
 ```{python}
 audio_sampling_rate = max(f1,f2)*n
@@ -227,8 +284,7 @@ print('audio_sampling_rate =',
 ```
 
 ```{python}
-Audio(ts3 + pause_4sec + ts3, 
+Audio(ts_ringtone + pause_4sec + ts_ringtone, 
       rate=audio_sampling_rate)
 ```
-
 

@@ -11,9 +11,12 @@ page-layout: full
 title-block-banner: false
 ---
 
+
 > Hi,
 >
-> Thanks for visiting my blog!  I decided to start writing these articles to share with others how I do Data Science.  It is also meant to demonstrate my skill set to prospective employers.  I am currently looking for a new job.  Please visit [my profile on LinkedIn](https://www.linkedin.com/in/scottwied/) to learn more about me.
+> Thanks for visiting my blog!  I decided to start writing these articles to share with others how I do Data Science.  I enjoy exploring data to solve real world problems.  For this blog, I have created a set of Jupyter notebooks -- each telling a story about a specific problem.  I try to keep the descriptions light, so the code and the visualizations tell the real story.  Each article has a corresponding Jupyter notebook.  You can [read the articles below](https://www.swied.com/#articles), or [download my notebooks on GitHub](https://github.com/swied/swied-website/tree/main/notebooks).
+>
+>Note that I am currently looking for a new job as a Data Scientist.  Please visit [my profile on LinkedIn](https://www.linkedin.com/in/scottwied/) to learn more about me.
 >
 > I hope you enjoy [swied.com](https://www.swied.com).
 >
@@ -21,4 +24,4 @@ title-block-banner: false
 >
 > Scott
 
-# Articles
+## Articles
