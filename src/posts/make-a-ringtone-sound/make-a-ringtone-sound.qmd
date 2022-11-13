@@ -12,6 +12,8 @@ image: image.png
 format:
   html:
     code-fold: false
+    code-line-numbers: true
+    code-block-border-left: true
     page-layout: article
 number-sections: true
 toc: true
