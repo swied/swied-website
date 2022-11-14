@@ -1,3 +1,3 @@
 # swied-website
 
-Code for swied.com website
+Code for https://www.swied.com website
