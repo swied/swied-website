@@ -33,10 +33,13 @@ You can download a [recording of the US ringtone](https://en.wikipedia.org/wiki/
 ```{python}
 #| tags: []
 from IPython.display import display, HTML, Audio
-HTML("""<audio controls>
-        <source 
-          src="US_ringback_tone.ogg" 
-          type="audio/ogg">
+HTML("""<p>Ringtone Recording:</p>
+        <audio controls>
+        <source type="audio/mp3"
+          src="resources/US_ringback_tone.mp3">
+        <source type="audio/ogg"
+          src="resources/US_ringback_tone.ogg">
+        <p>Your browser cannot play this audio</p>
         </audio>""")
 ```
 
@@ -170,7 +173,7 @@ Audio(ts_480, rate=f_480*n)
 
 ## Recreate the US ringtone
 
-In the United States, the ringtone has historically been a two second tone composed of the frequencies 440 Hz and 480 Hz. The tone is followed by a four second pause, and then repeated until somebody answers.
+In the United States, the ringtone has historically been a two second tone composed of the frequencies 440 Hz and 480 Hz. The tone is followed by a four second pause, and then repeated until the call is answered.
 
 ### Acustic Equations
 
