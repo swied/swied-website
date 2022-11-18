@@ -8,7 +8,7 @@
 
 <meta name="author" content="Scott Wied">
 <meta name="dcterms.date" content="2022-11-06">
-<meta name="description" content="Get financial reporting trends for any XBRL tag, by stock ticker, from the data.sec.gov API">
+<meta name="description" content="Get free financial reporting data on any public company from data.sec.gov using an API. You can actually get time series trends for any line item (XBRL tag) in their financial reporting documents.">
 
 <title>Scott’s Data Science Blog - Company Financial Trends</title>
 <style>
@@ -207,7 +207,7 @@ gtag('config', 'G-ZZ12P3MMWN', { 'anonymize_ip': true});
       <h1 class="title">Company Financial Trends</h1>
                   <div>
         <div class="description">
-          Get financial reporting trends for any XBRL tag, by stock ticker, from the data.sec.gov API
+          Get free financial reporting data on any public company from data.sec.gov using an API. You can actually get time series trends for any line item (XBRL tag) in their financial reporting documents.
         </div>
       </div>
                           <div class="quarto-categories">
@@ -249,7 +249,7 @@ gtag('config', 'G-ZZ12P3MMWN', { 'anonymize_ip': true});
    
   <ul>
   <li><a href="#introduction" id="toc-introduction" class="nav-link active" data-scroll-target="#introduction"><span class="toc-section-number">1</span>  Introduction</a></li>
-  <li><a href="#xbrl-tagging-in-a-nutshell" id="toc-xbrl-tagging-in-a-nutshell" class="nav-link" data-scroll-target="#xbrl-tagging-in-a-nutshell"><span class="toc-section-number">2</span>  XBRL tagging in a nutshell</a>
+  <li><a href="#intro-to-xbrl-tagging" id="toc-intro-to-xbrl-tagging" class="nav-link" data-scroll-target="#intro-to-xbrl-tagging"><span class="toc-section-number">2</span>  Intro to XBRL tagging</a>
   <ul class="collapse">
   <li><a href="#find-the-cik-for-apple" id="toc-find-the-cik-for-apple" class="nav-link" data-scroll-target="#find-the-cik-for-apple"><span class="toc-section-number">2.1</span>  Find the CIK for Apple</a></li>
   <li><a href="#open-a-10-k-report" id="toc-open-a-10-k-report" class="nav-link" data-scroll-target="#open-a-10-k-report"><span class="toc-section-number">2.2</span>  Open a 10-K report</a></li>
@@ -270,7 +270,7 @@ gtag('config', 'G-ZZ12P3MMWN', { 'anonymize_ip': true});
   <li><a href="#filter-the-dataframe-for-rank1-records" id="toc-filter-the-dataframe-for-rank1-records" class="nav-link" data-scroll-target="#filter-the-dataframe-for-rank1-records"><span class="toc-section-number">4.2</span>  Filter the dataframe for rank=1 records</a></li>
   <li><a href="#finalize-data-for-plotting" id="toc-finalize-data-for-plotting" class="nav-link" data-scroll-target="#finalize-data-for-plotting"><span class="toc-section-number">4.3</span>  Finalize data for plotting</a></li>
   </ul></li>
-  <li><a href="#show-trend-as-a-line-chart" id="toc-show-trend-as-a-line-chart" class="nav-link" data-scroll-target="#show-trend-as-a-line-chart"><span class="toc-section-number">5</span>  Show trend as a line chart</a></li>
+  <li><a href="#show-trend-as-a-bart-chart" id="toc-show-trend-as-a-bart-chart" class="nav-link" data-scroll-target="#show-trend-as-a-bart-chart"><span class="toc-section-number">5</span>  Show trend as a bart chart</a></li>
   </ul>
 </nav>
 </nav>
@@ -285,9 +285,10 @@ gtag('config', 'G-ZZ12P3MMWN', { 'anonymize_ip': true});
 
 <section id="introduction" class="level2" data-number="1">
 <h2 data-number="1" class="anchored" data-anchor-id="introduction"><span class="header-section-number">1</span> Introduction</h2>
+<p>If you want to do fundamental research on a publicly traded company, then there are a lot of services that will charge you a lot of money for that data. What if you don’t have a lot of money? And, what if you don’t trust any data that doesn’t come directly from its source? In this article I will show you how to use the vast data resources provided by the US government… for free.</p>
 </section>
-<section id="xbrl-tagging-in-a-nutshell" class="level2" data-number="2">
-<h2 data-number="2" class="anchored" data-anchor-id="xbrl-tagging-in-a-nutshell"><span class="header-section-number">2</span> XBRL tagging in a nutshell</h2>
+<section id="intro-to-xbrl-tagging" class="level2" data-number="2">
+<h2 data-number="2" class="anchored" data-anchor-id="intro-to-xbrl-tagging"><span class="header-section-number">2</span> Intro to XBRL tagging</h2>
 <p>A public company is required, by the SEC, to use XBRL line item tags whenever it files its 10-Q (quarterly) and 10-K (annual) financial reports. There is an sec.gov API that you can use to get data on the performance of a companies fundamental metrics over time. You will need the XBRL tag name for each metric that you wish to track.</p>
 <p>Below is a quote from an <a href="https://en.wikipedia.org/wiki/XBRL">XBRL Wikipedia article</a> that gives a technical desciption of the XBRL standard:</p>
 <blockquote class="blockquote">
@@ -1037,8 +1038,8 @@ Content Length: 3281 bytes</code></pre>
 </div>
 </section>
 </section>
-<section id="show-trend-as-a-line-chart" class="level2" data-number="5">
-<h2 data-number="5" class="anchored" data-anchor-id="show-trend-as-a-line-chart"><span class="header-section-number">5</span> Show trend as a line chart</h2>
+<section id="show-trend-as-a-bart-chart" class="level2" data-number="5">
+<h2 data-number="5" class="anchored" data-anchor-id="show-trend-as-a-bart-chart"><span class="header-section-number">5</span> Show trend as a bart chart</h2>
 <div class="cell" data-execution_count="11">
 <div class="sourceCode cell-code" id="cb13"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb13-1"><a href="#cb13-1"></a>alt.Chart(df_plot_data).mark_bar().encode(</span>
 <span id="cb13-2"><a href="#cb13-2"></a>    x <span class="op">=</span> alt.X(x_axis_name, </span>
@@ -1051,12 +1052,12 @@ Content Length: 3281 bytes</code></pre>
 <span id="cb13-9"><a href="#cb13-9"></a>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-display" data-execution_count="11">
 
-<div id="altair-viz-6f74d1552ac64110a6d92b189686dc26"></div>
+<div id="altair-viz-c092d19ccba441b18da634c100c6ad3d"></div>
 <script type="text/javascript">
   (function(spec, embedOpt){
     let outputDiv = document.currentScript.previousElementSibling;
-    if (outputDiv.id !== "altair-viz-6f74d1552ac64110a6d92b189686dc26") {
-      outputDiv = document.getElementById("altair-viz-6f74d1552ac64110a6d92b189686dc26");
+    if (outputDiv.id !== "altair-viz-c092d19ccba441b18da634c100c6ad3d") {
+      outputDiv = document.getElementById("altair-viz-c092d19ccba441b18da634c100c6ad3d");
     }
     const paths = {
       "vega": "https://cdn.jsdelivr.net/npm//vega@5?noext",
