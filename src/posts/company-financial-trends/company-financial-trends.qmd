@@ -1,6 +1,6 @@
 ---
 title: Company Financial Trends
-description: 'Get financial reporting trends for any XBRL tag, by stock ticker, from the data.sec.gov API'
+description: Get free financial reporting data on any public company from data.sec.gov using an API.  You can actually get time series trends for any line item (XBRL tag) in their financial reporting documents.
 author: Scott Wied
 date: 11/06/2022
 categories:
@@ -25,7 +25,9 @@ jupyter: python3
 
 ## Introduction
 
-## XBRL tagging in a nutshell
+If you want to do fundamental research on a publicly traded company, then there are a lot of services that will charge you a lot of money for that data.  What if you don't have a lot of money?  And, what if you don't trust any data that doesn't come directly from its source?  In this article I will show you how to use the vast data resources provided by the US government... for free.  
+
+## Intro to XBRL tagging
 
 A public company is required, by the SEC, to use XBRL line item tags whenever it files its 10-Q (quarterly) and 10-K (annual) financial reports.  There is an sec.gov API that you can use to get data on the performance of a companies fundamental metrics over time.  You will need the XBRL tag name for each metric that you wish to track.
 
@@ -237,7 +239,7 @@ order by `{x_axis_name}`
 df_plot_data.tail()
 ```
 
-## Show trend as a line chart
+## Show trend as a bart chart
 
 ```{python}
 alt.Chart(df_plot_data).mark_bar().encode(

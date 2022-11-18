@@ -8,13 +8,13 @@
 <title>Scott&#39;s Data Science Blog</title>
 <link>htts://www.swied.com/posts/company-financial-trends/company-financial-trends.html</link>
 <atom:link href="htts://www.swied.com/posts/company-financial-trends/company-financial-trends.xml" rel="self" type="application/rss+xml"/>
-<description>Get financial reporting trends for any XBRL tag, by stock ticker, from the data.sec.gov API</description>
+<description>Get free financial reporting data on any public company from data.sec.gov using an API.  You can actually get time series trends for any line item (XBRL tag) in their financial reporting documents.</description>
 <image>
 <url>htts://www.swied.com/image.png</url>
 <title>Scott&#39;s Data Science Blog</title>
 <link>htts://www.swied.com/posts/company-financial-trends/company-financial-trends.html</link>
 </image>
 <generator>quarto-1.2.258</generator>
-<lastBuildDate>Fri, 18 Nov 2022 23:53:28 GMT</lastBuildDate>
+<lastBuildDate>Fri, 18 Nov 2022 23:57:45 GMT</lastBuildDate>
 </channel>
 </rss>
