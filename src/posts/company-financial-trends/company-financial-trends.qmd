@@ -1,0 +1,253 @@
+---
+title: Company Financial Trends
+description: 'Get financial reporting trends for any XBRL tag, by stock ticker, from the data.sec.gov API'
+author: Scott Wied
+date: 11/06/2022
+categories:
+  - Pandas
+  - API's
+  - Matplotlib
+  - Finance
+  - Python
+image: image.png
+format:
+  html:
+    code-fold: false
+    page-layout: article
+number-sections: true
+toc: true
+toc-location: left
+code-line-numbers: true
+execute:
+  warning: false
+jupyter: python3
+---
+
+## Introduction
+
+## XBRL tagging in a nutshell
+
+A public company is required, by the SEC, to use XBRL line item tags whenever it files its 10-Q (quarterly) and 10-K (annual) financial reports.  There is an sec.gov API that you can use to get data on the performance of a companies fundamental metrics over time.  You will need the XBRL tag name for each metric that you wish to track.
+
+Below is a quote from an [XBRL Wikipedia article](https://en.wikipedia.org/wiki/XBRL) that gives a technical desciption of the XBRL standard:
+
+> XBRL (eXtensible Business Reporting Language) is a freely available and global framework for exchanging business information. XBRL allows the expression of semantic meaning commonly required in business reporting. The language is XML-based and uses the XML syntax and related XML technologies such as XML Schema, XLink, XPath, and Namespaces. One use of XBRL is to define and exchange financial information, such as a financial statement. The XBRL Specification is developed and published by XBRL International, Inc. (XII).
+
+The SEC has a [page that describes how they use XBRL](https://www.sec.gov/structureddata/osd-inline-xbrl.html).  It even includes a link to a [YouTube video](https://youtu.be/zTyhOvE79DQ) that you can watch sometime if you are having trouble sleeping. 
+
+The best way to become familiar with XBRL is to go through an example.  Let's do that below.
+
+### Find the CIK for Apple
+
+As and example, let's use Apple (stock ticker: APPL).  Every company that files with the SEC receives a central index key (CIK).  The API that we will use requires this CIK code.
+
+```{python}
+ticker = 'AAPL'
+```
+
+Start by [doing a search for a company on EDGAR](https://www.sec.gov/edgar/searchedgar/companysearch).  Look for the company CIK code (circled in red below) as you type in the ticker symbol.  Write this value down, and then click on the search result.
+
+<img src="./resources/sec-edgar-company-lookup.png" width="350"/>
+
+```{python}
+# Create a variable from the CIK code in the 
+# above image.  Make sure that the CIK is
+# uppercase, and that there is no space in the name.
+cik = 'CIK0000320193'
+```
+
+### Open a 10-K report
+
+The next page (see below) will display the search results for the chosen company.  Notice that the numeric part of the CIK code is included in the URL.  Now, click on one of the 10-K or 10-Q reports listed under "Selected Filings"
+
+<img src="./resources/sec-edgar-company-search-results.jpg" width="350"/>
+
+There are several files shown on the Filing Detail page (see below).  We are about the top on with the green <font color=green>*iXBRL*</font> note beside it.  Click on the link to open the filed report.
+
+<img src="./resources/sec-edgar-company-filing-details.png" width="350"/>
+
+### Find the finacial statements
+
+These SEC filing reports can be quite wordy.  Scroll down to the table of contents (see below) after opening the document.  Find the section titled *Financial Statements* and click on the bookmark link.  This will take you to the page where you will find several financial reports.
+
+<img src="./resources/sec-edgar-company-filing-toc.png" width="350"/>
+
+### Identify the *Net Income* line item
+
+Scroll down a little bit, until you see a table of numbers.  These reports are all in a specific format that is mandated by the SEC.  Each line item name is registered approved XBRL tags.  If you want to find the name of the tag, then click on one of the numbers with red lines above and below it.
+
+<img src="./resources/sec-edgar-10k-statement-of-operations.png" width="350"/>
+
+### Find the XBRL tag name for *Net Income*
+
+A pop-up window will appear (see below) showing the attributes of that line item value.  Find the *Tag* attribute row, and copy the part that says, *'NetincomeLoss'*.  This is our XBRL tag name!  We now have all of the information that we need to use the API.
+
+<img src="./resources/sec-edgar-popup-tag-name.png" width="350"/>
+
+```{python}
+# Create a variable with the XBRL tag name.
+# Note that it is case sensitive.
+xbrl_tag = 'NetIncomeLoss'
+```
+
+## API data pull
+
+In our example, we will attempt to plot the quarterly trend for Apple's *Net Income* line item.  We will be pulling the data from the [data.sec.gov api](https://www.sec.gov/edgar/sec-api-documentation).
+
+### Import python packages
+
+These are the packages that we will need.  All of them can be downloaded and installed with [Anaconda](https://www.anaconda.com/products/distribution).
+
+```{python}
+import requests
+import json
+from pprint import pprint
+import pandas as pd
+import numpy as np
+import re
+import matplotlib.pyplot as plt
+import altair as alt
+import pandasql
+```
+
+In this example 
+
+### Make the API Call
+
+```{python}
+# Build up the API request URL
+api_url_path = 'https://data.sec.gov/api/xbrl/companyconcept'
+url = f"{api_url_path}/{cik}/us-gaap/{xbrl_tag}.json"
+
+# Run the API request
+# Note the it will not run without your email address
+email_address = 'your-email@example.com'
+request_tag_data = (
+    requests
+    .get(url, 
+         headers={'User-Agent': email_address}))
+
+# Print the status code (200 is good, 404 is bad)
+print("Request status code:", request_tag_data.status_code)
+print("Content Type:", request_tag_data.headers['Content-Type'])
+print("Content Length:", 
+      request_tag_data.headers['Content-Length'], 'bytes')
+```
+
+### Take a look at the raw JSON data
+
+```{python}
+tag_data = request_tag_data.json()
+pprint(tag_data, depth=2)
+```
+
+### Convert to a Pandas Dataframe
+
+```{python}
+df_tag_data = pd.DataFrame.from_dict(tag_data['units']['USD'])
+df_tag_data.sort_values(by=['filed','fy','fp']).tail(15)
+```
+
+Note a few things about the above table:
+
+1. There are multiple records for each quarter. This is because the financial report shows values for the current quarter, the previous quarter, and the current quarter from the previous fiscal year.  It would be great if the API provided a filed describing which quarter time period was which.  When we go to plot the graph we will only want to include the current quarters value for each quarter.
+2. The values for Q1, Q2, and Q3 come from the form 10-Q.  There is no 10-Q for Q4, and the 10-K report only shows yearly totals.  In order to find the values for Q4 of each year we'll need to take the annual total and subtract the totals from Q1-3. 
+
+## Clean and filter data
+
+Since the data set does not have a column indicating which quarter each value is associated with, we will have to use a brute force approach.  We'll have to use a window function to pick a single record for each fiscal year & quarter.  The syntax for doing window operations in Pandas is a little weird, IMO.  I think that it's easier to do this in SQL, so lets use the *sqldf* function from the pandasql package.
+
+### Rank records over fiscal year and period
+
+In our first SQL query (see below), we are going to rank records over partitions defined by fiscal year and fiscal period.  We'll calculate the number of days in between the dates *start* and *end*.  And, finally, we'll create a new *val_10q* column to indicate the values that came from 10-Q reports.  We'll need it later when we subtract the sum of the values for Q1-3 from the annual amount to calculate the Q4 value.
+
+```{python}
+df_rank = pandasql.sqldf("""
+    select fy, fp, end, start,
+        (   julianday(date(end))
+           -julianday(date(start))
+        ) as num_days_in_period,
+        val, form,
+        (   case 
+            when form='10-Q'
+            then val
+            else 0
+            end
+        ) as val_10q,
+        rank()
+        over(
+            partition by fy, fp
+            order by 
+                end desc, 
+                start desc
+        ) as rnk
+    from df_tag_data
+    where form in('10-Q','10-K')
+""")
+
+df_rank.tail(15)
+```
+
+### Filter the dataframe for rank=1 records
+
+```{python}
+df_filtered = pandasql.sqldf("""
+    select 
+        fy, fp, 
+        end, start,
+        num_days_in_period,
+        val, form,
+        sum(val_10q) 
+        over(partition by fy
+            ) as total_val_10q
+    from df_rank
+    where rnk=1
+""")
+
+df_filtered.head()
+```
+
+### Finalize data for plotting
+
+```{python}
+x_axis_name = 'End Date'
+y_axis_name = f'{xbrl_tag} (USD in Billions)'
+
+df_plot_data = pandasql.sqldf(f"""
+select
+    fy as `Fiscal Year`, 
+    (   case 
+        when fp='FY' then 'Q4'
+        else fp
+        end
+    ) as `Fiscal Quarter`,
+    end as `{x_axis_name}`,
+    round(   
+        case when form='10-K' 
+            and num_days_in_period > 360
+        then (val-total_val_10q)/1e9
+        else val/1e9
+        end, 
+        2
+    ) as `{y_axis_name}`
+from df_filtered
+order by `{x_axis_name}`
+""")
+
+df_plot_data.tail()
+```
+
+## Show trend as a line chart
+
+```{python}
+alt.Chart(df_plot_data).mark_bar().encode(
+    x = alt.X(x_axis_name, 
+              axis = alt.Axis(labelOverlap='greedy')),
+    y = y_axis_name,
+).properties(
+    title = f"{ticker} - {y_axis_name}",
+    width = 300,
+    height = 200
+)
+```
+

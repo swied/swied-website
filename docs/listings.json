@@ -3,15 +3,15 @@
     "listing": "/index.html",
     "items": [
       "/posts/make-a-ringtone-sound/make-a-ringtone-sound.html",
-      "/posts/stock_ticker_data/stock_ticker_data.html"
+      "/posts/company-financial-trends/company-financial-trends.html"
     ]
   },
   {
-    "listing": "/posts/make-a-ringtone-sound/make-a-ringtone-sound.html",
+    "listing": "/posts/company-financial-trends/company-financial-trends.html",
     "items": []
   },
   {
-    "listing": "/posts/stock_ticker_data/stock_ticker_data.html",
+    "listing": "/posts/make-a-ringtone-sound/make-a-ringtone-sound.html",
     "items": []
   }
 ]
