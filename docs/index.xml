@@ -125,7 +125,7 @@ y_at_480_hz = sin(960*pi*t)</code></pre>
 <span id="cb8-4">lambda_y_480 <span class="op" style="color: #5E5E5E;">=</span> s.lambdify(t, y_at_480_hz)</span></code></pre></div>
 </div>
 <div class="cell" data-execution_count="7">
-<div class="sourceCode cell-code" id="cb9" style="background: #f1f3f5;"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb9-1"><span class="co" style="color: #5E5E5E;"># Define numberic values for f1, and f2</span></span>
+<div class="sourceCode cell-code" id="cb9" style="background: #f1f3f5;"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb9-1"><span class="co" style="color: #5E5E5E;"># Define numeric values for f1, and f2</span></span>
 <span id="cb9-2">f_440, f_480 <span class="op" style="color: #5E5E5E;">=</span> (<span class="dv" style="color: #AD0000;">440</span>, <span class="dv" style="color: #AD0000;">480</span>)</span>
 <span id="cb9-3"><span class="co" style="color: #5E5E5E;"># Number of samples per cycle</span></span>
 <span id="cb9-4">n <span class="op" style="color: #5E5E5E;">=</span> <span class="dv" style="color: #AD0000;">50</span></span>
@@ -156,8 +156,7 @@ y_at_480_hz = sin(960*pi*t)</code></pre>
 <section id="play-sounds-for-a4-and-b4" class="level3" data-number="2.5">
 <h3 data-number="2.5" class="anchored" data-anchor-id="play-sounds-for-a4-and-b4"><span class="header-section-number">2.5</span> Play sounds for A4 and B4</h3>
 <div class="cell" data-execution_count="9">
-<div class="sourceCode cell-code" id="cb11" style="background: #f1f3f5;"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb11-1"><span class="co" style="color: #5E5E5E;"># from IPython.display import Audio</span></span>
-<span id="cb11-2">Audio(ts_440, rate<span class="op" style="color: #5E5E5E;">=</span>f_440<span class="op" style="color: #5E5E5E;">*</span>n)</span></code></pre></div>
+<div class="sourceCode cell-code" id="cb11" style="background: #f1f3f5;"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb11-1">Audio(ts_440, rate<span class="op" style="color: #5E5E5E;">=</span>f_440<span class="op" style="color: #5E5E5E;">*</span>n)</span></code></pre></div>
 <div class="cell-output cell-output-display" data-execution_count="9">
 
                 <audio controls="controls">
@@ -361,7 +360,7 @@ No matching items
 <h3 data-number="2.2" class="anchored" data-anchor-id="open-a-10-k-report"><span class="header-section-number">2.2</span> Open a 10-K report</h3>
 <p>The next page (see below) will display the search results for the chosen company. Notice that the numeric part of the CIK code is included in the URL. Now, click on one of the 10-K or 10-Q reports listed under “Selected Filings”</p>
 <p><img src="htts://www.swied.com/posts/company-financial-trends/resources/sec-edgar-company-search-results.jpg" width="350"></p>
-<p>There are several files shown on the Filing Detail page (see below). We are about the top on with the green <font color="green"><em>iXBRL</em></font> note beside it. Click on the link to open the filed report.</p>
+<p>There are several files shown on the Filing Detail page (see below). We want to view the top one, the one with the green <font color="green"><em>iXBRL</em></font> note beside it. Click on the link to open the filed report.</p>
 <p><img src="htts://www.swied.com/posts/company-financial-trends/resources/sec-edgar-company-filing-details.png" width="350"></p>
 </section>
 <section id="find-the-finacial-statements" class="level3" data-number="2.3">
@@ -371,7 +370,7 @@ No matching items
 </section>
 <section id="identify-the-net-income-line-item" class="level3" data-number="2.4">
 <h3 data-number="2.4" class="anchored" data-anchor-id="identify-the-net-income-line-item"><span class="header-section-number">2.4</span> Identify the <em>Net Income</em> line item</h3>
-<p>Scroll down a little bit, until you see a table of numbers. These reports are all in a specific format that is mandated by the SEC. Each line item name is registered approved XBRL tags. If you want to find the name of the tag, then click on one of the numbers with red lines above and below it.</p>
+<p>Scroll down a little bit, until you see a table of numbers. These reports are all in a specific format that is mandated by the SEC. Each line item name is a registered and approved XBRL tag. If you want to find the name of the tag, then click on one of the numbers with red lines above and below it.</p>
 <p><img src="htts://www.swied.com/posts/company-financial-trends/resources/sec-edgar-10k-statement-of-operations.png" width="350"></p>
 </section>
 <section id="find-the-xbrl-tag-name-for-net-income" class="level3" data-number="2.5">
@@ -398,11 +397,9 @@ No matching items
 <span id="cb4-4"><span class="im" style="color: #00769E;">import</span> pandas <span class="im" style="color: #00769E;">as</span> pd</span>
 <span id="cb4-5"><span class="im" style="color: #00769E;">import</span> numpy <span class="im" style="color: #00769E;">as</span> np</span>
 <span id="cb4-6"><span class="im" style="color: #00769E;">import</span> re</span>
-<span id="cb4-7"><span class="im" style="color: #00769E;">import</span> matplotlib.pyplot <span class="im" style="color: #00769E;">as</span> plt</span>
-<span id="cb4-8"><span class="im" style="color: #00769E;">import</span> altair <span class="im" style="color: #00769E;">as</span> alt</span>
-<span id="cb4-9"><span class="im" style="color: #00769E;">import</span> pandasql</span></code></pre></div>
+<span id="cb4-7"><span class="im" style="color: #00769E;">import</span> altair <span class="im" style="color: #00769E;">as</span> alt</span>
+<span id="cb4-8"><span class="im" style="color: #00769E;">import</span> pandasql</span></code></pre></div>
 </div>
-<p>In this example</p>
 </section>
 <section id="make-the-api-call" class="level3" data-number="3.2">
 <h3 data-number="3.2" class="anchored" data-anchor-id="make-the-api-call"><span class="header-section-number">3.2</span> Make the API Call</h3>
@@ -412,7 +409,7 @@ No matching items
 <span id="cb5-3">url <span class="op" style="color: #5E5E5E;">=</span> <span class="ss" style="color: #20794D;">f"</span><span class="sc" style="color: #5E5E5E;">{</span>api_url_path<span class="sc" style="color: #5E5E5E;">}</span><span class="ss" style="color: #20794D;">/</span><span class="sc" style="color: #5E5E5E;">{</span>cik<span class="sc" style="color: #5E5E5E;">}</span><span class="ss" style="color: #20794D;">/us-gaap/</span><span class="sc" style="color: #5E5E5E;">{</span>xbrl_tag<span class="sc" style="color: #5E5E5E;">}</span><span class="ss" style="color: #20794D;">.json"</span></span>
 <span id="cb5-4"></span>
 <span id="cb5-5"><span class="co" style="color: #5E5E5E;"># Run the API request</span></span>
-<span id="cb5-6"><span class="co" style="color: #5E5E5E;"># Note the it will not run without your email address</span></span>
+<span id="cb5-6"><span class="co" style="color: #5E5E5E;"># Note that it will not run without your email address</span></span>
 <span id="cb5-7">email_address <span class="op" style="color: #5E5E5E;">=</span> <span class="st" style="color: #20794D;">'your-email@example.com'</span></span>
 <span id="cb5-8">request_tag_data <span class="op" style="color: #5E5E5E;">=</span> (</span>
 <span id="cb5-9">    requests</span>
@@ -452,7 +449,7 @@ Content Length: 3281 bytes</code></pre>
 <h3 data-number="3.4" class="anchored" data-anchor-id="convert-to-a-pandas-dataframe"><span class="header-section-number">3.4</span> Convert to a Pandas Dataframe</h3>
 <div class="cell" data-execution_count="7">
 <div class="sourceCode cell-code" id="cb9" style="background: #f1f3f5;"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb9-1">df_tag_data <span class="op" style="color: #5E5E5E;">=</span> pd.DataFrame.from_dict(tag_data[<span class="st" style="color: #20794D;">'units'</span>][<span class="st" style="color: #20794D;">'USD'</span>])</span>
-<span id="cb9-2">df_tag_data.sort_values(by<span class="op" style="color: #5E5E5E;">=</span>[<span class="st" style="color: #20794D;">'filed'</span>,<span class="st" style="color: #20794D;">'fy'</span>,<span class="st" style="color: #20794D;">'fp'</span>]).tail(<span class="dv" style="color: #AD0000;">15</span>)</span></code></pre></div>
+<span id="cb9-2">df_tag_data.sort_values(by<span class="op" style="color: #5E5E5E;">=</span>[<span class="st" style="color: #20794D;">'filed'</span>,<span class="st" style="color: #20794D;">'fy'</span>,<span class="st" style="color: #20794D;">'fp'</span>]).tail()</span></code></pre></div>
 <div class="cell-output cell-output-display" data-execution_count="7">
 
 <div>
@@ -473,126 +470,6 @@ Content Length: 3281 bytes</code></pre>
     </tr>
   </thead>
   <tbody>
-    <tr>
-      <th>268</th>
-      <td>2019-09-29</td>
-      <td>2020-09-26</td>
-      <td>57411000000</td>
-      <td>0000320193-21-000105</td>
-      <td>2021</td>
-      <td>FY</td>
-      <td>10-K</td>
-      <td>2021-10-29</td>
-      <td>NaN</td>
-    </tr>
-    <tr>
-      <th>281</th>
-      <td>2020-09-27</td>
-      <td>2021-09-25</td>
-      <td>94680000000</td>
-      <td>0000320193-21-000105</td>
-      <td>2021</td>
-      <td>FY</td>
-      <td>10-K</td>
-      <td>2021-10-29</td>
-      <td>NaN</td>
-    </tr>
-    <tr>
-      <th>272</th>
-      <td>2020-09-27</td>
-      <td>2020-12-26</td>
-      <td>28755000000</td>
-      <td>0000320193-22-000007</td>
-      <td>2022</td>
-      <td>Q1</td>
-      <td>10-Q</td>
-      <td>2022-01-28</td>
-      <td>CY2020Q4</td>
-    </tr>
-    <tr>
-      <th>283</th>
-      <td>2021-09-26</td>
-      <td>2021-12-25</td>
-      <td>34630000000</td>
-      <td>0000320193-22-000007</td>
-      <td>2022</td>
-      <td>Q1</td>
-      <td>10-Q</td>
-      <td>2022-01-28</td>
-      <td>CY2021Q4</td>
-    </tr>
-    <tr>
-      <th>274</th>
-      <td>2020-09-27</td>
-      <td>2021-03-27</td>
-      <td>52385000000</td>
-      <td>0000320193-22-000059</td>
-      <td>2022</td>
-      <td>Q2</td>
-      <td>10-Q</td>
-      <td>2022-04-29</td>
-      <td>NaN</td>
-    </tr>
-    <tr>
-      <th>276</th>
-      <td>2020-12-27</td>
-      <td>2021-03-27</td>
-      <td>23630000000</td>
-      <td>0000320193-22-000059</td>
-      <td>2022</td>
-      <td>Q2</td>
-      <td>10-Q</td>
-      <td>2022-04-29</td>
-      <td>CY2021Q1</td>
-    </tr>
-    <tr>
-      <th>284</th>
-      <td>2021-09-26</td>
-      <td>2022-03-26</td>
-      <td>59640000000</td>
-      <td>0000320193-22-000059</td>
-      <td>2022</td>
-      <td>Q2</td>
-      <td>10-Q</td>
-      <td>2022-04-29</td>
-      <td>NaN</td>
-    </tr>
-    <tr>
-      <th>285</th>
-      <td>2021-12-26</td>
-      <td>2022-03-26</td>
-      <td>25010000000</td>
-      <td>0000320193-22-000059</td>
-      <td>2022</td>
-      <td>Q2</td>
-      <td>10-Q</td>
-      <td>2022-04-29</td>
-      <td>CY2022Q1</td>
-    </tr>
-    <tr>
-      <th>278</th>
-      <td>2020-09-27</td>
-      <td>2021-06-26</td>
-      <td>74129000000</td>
-      <td>0000320193-22-000070</td>
-      <td>2022</td>
-      <td>Q3</td>
-      <td>10-Q</td>
-      <td>2022-07-29</td>
-      <td>NaN</td>
-    </tr>
-    <tr>
-      <th>280</th>
-      <td>2021-03-28</td>
-      <td>2021-06-26</td>
-      <td>21744000000</td>
-      <td>0000320193-22-000070</td>
-      <td>2022</td>
-      <td>Q3</td>
-      <td>10-Q</td>
-      <td>2022-07-29</td>
-      <td>CY2021Q2</td>
-    </tr>
     <tr>
       <th>286</th>
       <td>2021-09-26</td>
@@ -660,14 +537,14 @@ Content Length: 3281 bytes</code></pre>
 </div>
 <p>Note a few things about the above table:</p>
 <ol type="1">
-<li>There are multiple records for each quarter. This is because the financial report shows values for the current quarter, the previous quarter, and the current quarter from the previous fiscal year. It would be great if the API provided a filed describing which quarter time period was which. When we go to plot the graph we will only want to include the current quarters value for each quarter.</li>
-<li>The values for Q1, Q2, and Q3 come from the form 10-Q. There is no 10-Q for Q4, and the 10-K report only shows yearly totals. In order to find the values for Q4 of each year we’ll need to take the annual total and subtract the totals from Q1-3.</li>
+<li>There are multiple records for each quarter. This is because the financial report shows values for the current quarter, the previous quarter, and the current quarter from the previous fiscal year. It would be great if the API provided a field describing which time period was which. When we go to plot the graph we will only want to include the current quarters value for each quarter.</li>
+<li>The values for Q1, Q2, and Q3 come from the form 10-Q. There is no 10-Q for Q4, and the 10-K report only shows yearly totals. In order to find the values for Q4 of each year we’ll need to take the annual total and subtract the totals from Q1, Q2, and Q3.</li>
 </ol>
 </section>
 </section>
 <section id="clean-and-filter-data" class="level2" data-number="4">
 <h2 data-number="4" class="anchored" data-anchor-id="clean-and-filter-data"><span class="header-section-number">4</span> Clean and filter data</h2>
-<p>Since the data set does not have a column indicating which quarter each value is associated with, we will have to use a brute force approach. We’ll have to use a window function to pick a single record for each fiscal year &amp; quarter. The syntax for doing window operations in Pandas is a little weird, IMO. I think that it’s easier to do this in SQL, so lets use the <em>sqldf</em> function from the pandasql package.</p>
+<p>Since the data set does not have a column indicating which quarter each value is associated with, we will have to use a brute force approach. We’ll have to use a window function to pick a single record for each fiscal year/quarter. The syntax for doing window operations in Pandas is a little weird, IMO. I think that it’s easier to do this in SQL, so lets use the <em>sqldf</em> function from the pandasql package. Note that <em>sqldf</em> kind of slow on large dataframes.</p>
 <section id="rank-records-over-fiscal-year-and-period" class="level3" data-number="4.1">
 <h3 data-number="4.1" class="anchored" data-anchor-id="rank-records-over-fiscal-year-and-period"><span class="header-section-number">4.1</span> Rank records over fiscal year and period</h3>
 <p>In our first SQL query (see below), we are going to rank records over partitions defined by fiscal year and fiscal period. We’ll calculate the number of days in between the dates <em>start</em> and <em>end</em>. And, finally, we’ll create a new <em>val_10q</em> column to indicate the values that came from 10-Q reports. We’ll need it later when we subtract the sum of the values for Q1-3 from the annual amount to calculate the Q4 value.</p>
@@ -695,7 +572,7 @@ Content Length: 3281 bytes</code></pre>
 <span id="cb10-21"><span class="st" style="color: #20794D;">    where form in('10-Q','10-K')</span></span>
 <span id="cb10-22"><span class="st" style="color: #20794D;">"""</span>)</span>
 <span id="cb10-23"></span>
-<span id="cb10-24">df_rank.tail(<span class="dv" style="color: #AD0000;">15</span>)</span></code></pre></div>
+<span id="cb10-24">df_rank.tail()</span></code></pre></div>
 <div class="cell-output cell-output-display" data-execution_count="8">
 
 <div>
@@ -716,126 +593,6 @@ Content Length: 3281 bytes</code></pre>
     </tr>
   </thead>
   <tbody>
-    <tr>
-      <th>249</th>
-      <td>2021</td>
-      <td>Q3</td>
-      <td>2020-06-27</td>
-      <td>2020-03-29</td>
-      <td>90.0</td>
-      <td>11253000000</td>
-      <td>10-Q</td>
-      <td>11253000000</td>
-      <td>3</td>
-    </tr>
-    <tr>
-      <th>250</th>
-      <td>2021</td>
-      <td>Q3</td>
-      <td>2020-06-27</td>
-      <td>2019-09-29</td>
-      <td>272.0</td>
-      <td>44738000000</td>
-      <td>10-Q</td>
-      <td>44738000000</td>
-      <td>4</td>
-    </tr>
-    <tr>
-      <th>251</th>
-      <td>2022</td>
-      <td>FY</td>
-      <td>2022-09-24</td>
-      <td>2021-09-26</td>
-      <td>363.0</td>
-      <td>99803000000</td>
-      <td>10-K</td>
-      <td>0</td>
-      <td>1</td>
-    </tr>
-    <tr>
-      <th>252</th>
-      <td>2022</td>
-      <td>FY</td>
-      <td>2021-09-25</td>
-      <td>2020-09-27</td>
-      <td>363.0</td>
-      <td>94680000000</td>
-      <td>10-K</td>
-      <td>0</td>
-      <td>2</td>
-    </tr>
-    <tr>
-      <th>253</th>
-      <td>2022</td>
-      <td>FY</td>
-      <td>2020-09-26</td>
-      <td>2019-09-29</td>
-      <td>363.0</td>
-      <td>57411000000</td>
-      <td>10-K</td>
-      <td>0</td>
-      <td>3</td>
-    </tr>
-    <tr>
-      <th>254</th>
-      <td>2022</td>
-      <td>Q1</td>
-      <td>2021-12-25</td>
-      <td>2021-09-26</td>
-      <td>90.0</td>
-      <td>34630000000</td>
-      <td>10-Q</td>
-      <td>34630000000</td>
-      <td>1</td>
-    </tr>
-    <tr>
-      <th>255</th>
-      <td>2022</td>
-      <td>Q1</td>
-      <td>2020-12-26</td>
-      <td>2020-09-27</td>
-      <td>90.0</td>
-      <td>28755000000</td>
-      <td>10-Q</td>
-      <td>28755000000</td>
-      <td>2</td>
-    </tr>
-    <tr>
-      <th>256</th>
-      <td>2022</td>
-      <td>Q2</td>
-      <td>2022-03-26</td>
-      <td>2021-12-26</td>
-      <td>90.0</td>
-      <td>25010000000</td>
-      <td>10-Q</td>
-      <td>25010000000</td>
-      <td>1</td>
-    </tr>
-    <tr>
-      <th>257</th>
-      <td>2022</td>
-      <td>Q2</td>
-      <td>2022-03-26</td>
-      <td>2021-09-26</td>
-      <td>181.0</td>
-      <td>59640000000</td>
-      <td>10-Q</td>
-      <td>59640000000</td>
-      <td>2</td>
-    </tr>
-    <tr>
-      <th>258</th>
-      <td>2022</td>
-      <td>Q2</td>
-      <td>2021-03-27</td>
-      <td>2020-12-27</td>
-      <td>90.0</td>
-      <td>23630000000</td>
-      <td>10-Q</td>
-      <td>23630000000</td>
-      <td>3</td>
-    </tr>
     <tr>
       <th>259</th>
       <td>2022</td>
@@ -1017,7 +774,7 @@ Content Length: 3281 bytes</code></pre>
 <span id="cb12-13"><span class="ss" style="color: #20794D;">    round(   </span></span>
 <span id="cb12-14"><span class="ss" style="color: #20794D;">        case when form='10-K' </span></span>
 <span id="cb12-15"><span class="ss" style="color: #20794D;">            and num_days_in_period &gt; 360</span></span>
-<span id="cb12-16"><span class="ss" style="color: #20794D;">        then (val-total_val_10q)/1e9</span></span>
+<span id="cb12-16"><span class="ss" style="color: #20794D;">        then (val - total_val_10q)/1e9</span></span>
 <span id="cb12-17"><span class="ss" style="color: #20794D;">        else val/1e9</span></span>
 <span id="cb12-18"><span class="ss" style="color: #20794D;">        end, </span></span>
 <span id="cb12-19"><span class="ss" style="color: #20794D;">        2</span></span>
@@ -1098,12 +855,12 @@ Content Length: 3281 bytes</code></pre>
 <span id="cb13-9">)</span></code></pre></div>
 <div class="cell-output cell-output-display" data-execution_count="11">
 
-<div id="altair-viz-c092d19ccba441b18da634c100c6ad3d"></div>
+<div id="altair-viz-ebf0ad43d5064a9297eec2597b0c0904"></div>
 <script type="text/javascript">
   (function(spec, embedOpt){
     let outputDiv = document.currentScript.previousElementSibling;
-    if (outputDiv.id !== "altair-viz-c092d19ccba441b18da634c100c6ad3d") {
-      outputDiv = document.getElementById("altair-viz-c092d19ccba441b18da634c100c6ad3d");
+    if (outputDiv.id !== "altair-viz-ebf0ad43d5064a9297eec2597b0c0904") {
+      outputDiv = document.getElementById("altair-viz-ebf0ad43d5064a9297eec2597b0c0904");
     }
     const paths = {
       "vega": "https://cdn.jsdelivr.net/npm//vega@5?noext",

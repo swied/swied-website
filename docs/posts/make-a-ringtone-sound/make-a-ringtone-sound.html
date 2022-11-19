@@ -380,7 +380,7 @@ y_at_480_hz = sin(960*pi*t)</code></pre>
 <span id="cb8-4"><a href="#cb8-4"></a>lambda_y_480 <span class="op">=</span> s.lambdify(t, y_at_480_hz)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <div class="cell" data-execution_count="7">
-<div class="sourceCode cell-code" id="cb9"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb9-1"><a href="#cb9-1"></a><span class="co"># Define numberic values for f1, and f2</span></span>
+<div class="sourceCode cell-code" id="cb9"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb9-1"><a href="#cb9-1"></a><span class="co"># Define numeric values for f1, and f2</span></span>
 <span id="cb9-2"><a href="#cb9-2"></a>f_440, f_480 <span class="op">=</span> (<span class="dv">440</span>, <span class="dv">480</span>)</span>
 <span id="cb9-3"><a href="#cb9-3"></a><span class="co"># Number of samples per cycle</span></span>
 <span id="cb9-4"><a href="#cb9-4"></a>n <span class="op">=</span> <span class="dv">50</span></span>
@@ -411,8 +411,7 @@ y_at_480_hz = sin(960*pi*t)</code></pre>
 <section id="play-sounds-for-a4-and-b4" class="level3" data-number="2.5">
 <h3 data-number="2.5" class="anchored" data-anchor-id="play-sounds-for-a4-and-b4"><span class="header-section-number">2.5</span> Play sounds for A4 and B4</h3>
 <div class="cell" data-execution_count="9">
-<div class="sourceCode cell-code" id="cb11"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb11-1"><a href="#cb11-1"></a><span class="co"># from IPython.display import Audio</span></span>
-<span id="cb11-2"><a href="#cb11-2"></a>Audio(ts_440, rate<span class="op">=</span>f_440<span class="op">*</span>n)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb11"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb11-1"><a href="#cb11-1"></a>Audio(ts_440, rate<span class="op">=</span>f_440<span class="op">*</span>n)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-display" data-execution_count="9">
 
                 <audio controls="controls">

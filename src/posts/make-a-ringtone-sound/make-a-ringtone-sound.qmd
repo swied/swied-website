@@ -130,7 +130,7 @@ lambda_y_480 = s.lambdify(t, y_at_480_hz)
 ```
 
 ```{python}
-# Define numberic values for f1, and f2
+# Define numeric values for f1, and f2
 f_440, f_480 = (440, 480)
 # Number of samples per cycle
 n = 50
@@ -162,7 +162,6 @@ ts_480 = [lambda_y_480(t/1e6)
 ### Play sounds for A4 and B4
 
 ```{python}
-# from IPython.display import Audio
 Audio(ts_440, rate=f_440*n)
 ```
 
