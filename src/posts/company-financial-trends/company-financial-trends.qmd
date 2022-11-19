@@ -64,7 +64,7 @@ The next page (see below) will display the search results for the chosen company
 
 <img src="./resources/sec-edgar-company-search-results.jpg" width="350"/>
 
-There are several files shown on the Filing Detail page (see below).  We are about the top on with the green <font color=green>*iXBRL*</font> note beside it.  Click on the link to open the filed report.
+There are several files shown on the Filing Detail page (see below).  We want to view the top one, the one with the green <font color=green>*iXBRL*</font> note beside it.  Click on the link to open the filed report.
 
 <img src="./resources/sec-edgar-company-filing-details.png" width="350"/>
 
@@ -76,7 +76,7 @@ These SEC filing reports can be quite wordy.  Scroll down to the table of conten
 
 ### Identify the *Net Income* line item
 
-Scroll down a little bit, until you see a table of numbers.  These reports are all in a specific format that is mandated by the SEC.  Each line item name is registered approved XBRL tags.  If you want to find the name of the tag, then click on one of the numbers with red lines above and below it.
+Scroll down a little bit, until you see a table of numbers.  These reports are all in a specific format that is mandated by the SEC.  Each line item name is a registered and approved XBRL tag.  If you want to find the name of the tag, then click on one of the numbers with red lines above and below it.
 
 <img src="./resources/sec-edgar-10k-statement-of-operations.png" width="350"/>
 
@@ -107,12 +107,9 @@ from pprint import pprint
 import pandas as pd
 import numpy as np
 import re
-import matplotlib.pyplot as plt
 import altair as alt
 import pandasql
 ```
-
-In this example 
 
 ### Make the API Call
 
@@ -122,7 +119,7 @@ api_url_path = 'https://data.sec.gov/api/xbrl/companyconcept'
 url = f"{api_url_path}/{cik}/us-gaap/{xbrl_tag}.json"
 
 # Run the API request
-# Note the it will not run without your email address
+# Note that it will not run without your email address
 email_address = 'your-email@example.com'
 request_tag_data = (
     requests
@@ -147,17 +144,17 @@ pprint(tag_data, depth=2)
 
 ```{python}
 df_tag_data = pd.DataFrame.from_dict(tag_data['units']['USD'])
-df_tag_data.sort_values(by=['filed','fy','fp']).tail(15)
+df_tag_data.sort_values(by=['filed','fy','fp']).tail()
 ```
 
 Note a few things about the above table:
 
-1. There are multiple records for each quarter. This is because the financial report shows values for the current quarter, the previous quarter, and the current quarter from the previous fiscal year.  It would be great if the API provided a filed describing which quarter time period was which.  When we go to plot the graph we will only want to include the current quarters value for each quarter.
-2. The values for Q1, Q2, and Q3 come from the form 10-Q.  There is no 10-Q for Q4, and the 10-K report only shows yearly totals.  In order to find the values for Q4 of each year we'll need to take the annual total and subtract the totals from Q1-3. 
+1. There are multiple records for each quarter. This is because the financial report shows values for the current quarter, the previous quarter, and the current quarter from the previous fiscal year.  It would be great if the API provided a field describing which time period was which.  When we go to plot the graph we will only want to include the current quarters value for each quarter.
+2. The values for Q1, Q2, and Q3 come from the form 10-Q.  There is no 10-Q for Q4, and the 10-K report only shows yearly totals.  In order to find the values for Q4 of each year we'll need to take the annual total and subtract the totals from Q1, Q2, and Q3. 
 
 ## Clean and filter data
 
-Since the data set does not have a column indicating which quarter each value is associated with, we will have to use a brute force approach.  We'll have to use a window function to pick a single record for each fiscal year & quarter.  The syntax for doing window operations in Pandas is a little weird, IMO.  I think that it's easier to do this in SQL, so lets use the *sqldf* function from the pandasql package.
+Since the data set does not have a column indicating which quarter each value is associated with, we will have to use a brute force approach.  We'll have to use a window function to pick a single record for each fiscal year/quarter.  The syntax for doing window operations in Pandas is a little weird, IMO.  I think that it's easier to do this in SQL, so lets use the *sqldf* function from the pandasql package.  Note that *sqldf* kind of slow on large dataframes.
 
 ### Rank records over fiscal year and period
 
@@ -187,7 +184,7 @@ df_rank = pandasql.sqldf("""
     where form in('10-Q','10-K')
 """)
 
-df_rank.tail(15)
+df_rank.tail()
 ```
 
 ### Filter the dataframe for rank=1 records
@@ -227,7 +224,7 @@ select
     round(   
         case when form='10-K' 
             and num_days_in_period > 360
-        then (val-total_val_10q)/1e9
+        then (val - total_val_10q)/1e9
         else val/1e9
         end, 
         2
