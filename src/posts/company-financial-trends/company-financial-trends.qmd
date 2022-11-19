@@ -49,7 +49,7 @@ ticker = 'AAPL'
 
 Start by [doing a search for a company on EDGAR](https://www.sec.gov/edgar/searchedgar/companysearch).  Look for the company CIK code (circled in red below) as you type in the ticker symbol.  Write this value down, and then click on the search result.
 
-<img src="./resources/sec-edgar-company-lookup.png" width="350"/>
+<img src="./resources/sec-edgar-company-lookup.png" width="100%"/>
 
 ```{python}
 # Create a variable from the CIK code in the 
@@ -62,29 +62,29 @@ cik = 'CIK0000320193'
 
 The next page (see below) will display the search results for the chosen company.  Notice that the numeric part of the CIK code is included in the URL.  Now, click on one of the 10-K or 10-Q reports listed under "Selected Filings"
 
-<img src="./resources/sec-edgar-company-search-results.jpg" width="350"/>
+<img src="./resources/sec-edgar-company-search-results.jpg" width="100%"/>
 
 There are several files shown on the Filing Detail page (see below).  We want to view the top one, the one with the green <font color=green>*iXBRL*</font> note beside it.  Click on the link to open the filed report.
 
-<img src="./resources/sec-edgar-company-filing-details.png" width="350"/>
+<img src="./resources/sec-edgar-company-filing-details.png" width="100%"/>
 
 ### Find the finacial statements
 
 These SEC filing reports can be quite wordy.  Scroll down to the table of contents (see below) after opening the document.  Find the section titled *Financial Statements* and click on the bookmark link.  This will take you to the page where you will find several financial reports.
 
-<img src="./resources/sec-edgar-company-filing-toc.png" width="350"/>
+<img src="./resources/sec-edgar-company-filing-toc.png" width="100%"/>
 
 ### Identify the *Net Income* line item
 
 Scroll down a little bit, until you see a table of numbers.  These reports are all in a specific format that is mandated by the SEC.  Each line item name is a registered and approved XBRL tag.  If you want to find the name of the tag, then click on one of the numbers with red lines above and below it.
 
-<img src="./resources/sec-edgar-10k-statement-of-operations.png" width="350"/>
+<img src="./resources/sec-edgar-10k-statement-of-operations.png" width="100%"/>
 
 ### Find the XBRL tag name for *Net Income*
 
 A pop-up window will appear (see below) showing the attributes of that line item value.  Find the *Tag* attribute row, and copy the part that says, *'NetincomeLoss'*.  This is our XBRL tag name!  We now have all of the information that we need to use the API.
 
-<img src="./resources/sec-edgar-popup-tag-name.png" width="350"/>
+<img src="./resources/sec-edgar-popup-tag-name.png" width="100%"/>
 
 ```{python}
 # Create a variable with the XBRL tag name.
@@ -143,8 +143,17 @@ pprint(tag_data, depth=2)
 ### Convert to a Pandas Dataframe
 
 ```{python}
-df_tag_data = pd.DataFrame.from_dict(tag_data['units']['USD'])
-df_tag_data.sort_values(by=['filed','fy','fp']).tail()
+# Create dataframe from dictionary
+df_tag_data = (
+    pd.DataFrame
+    .from_dict(tag_data['units']['USD'])
+)
+
+# Display the last 8 records in the dataframe
+(   df_tag_data
+    .sort_values(by=['filed'])
+    .tail(8)
+)
 ```
 
 Note a few things about the above table:
@@ -154,7 +163,7 @@ Note a few things about the above table:
 
 ## Clean and filter data
 
-Since the data set does not have a column indicating which quarter each value is associated with, we will have to use a brute force approach.  We'll have to use a window function to pick a single record for each fiscal year/quarter.  The syntax for doing window operations in Pandas is a little weird, IMO.  I think that it's easier to do this in SQL, so lets use the *sqldf* function from the pandasql package.  Note that *sqldf* kind of slow on large dataframes.
+Since the data set does not have a column indicating which quarter each value is associated with, we will have to use a brute force approach.  We'll have to use a window function to pick a single record for each fiscal year/quarter.  Let's use the *sqldf* method from the pandasql package.  Note that *sqldf* is kind of slow on large dataframes.
 
 ### Rank records over fiscal year and period
 
@@ -184,7 +193,8 @@ df_rank = pandasql.sqldf("""
     where form in('10-Q','10-K')
 """)
 
-df_rank.tail()
+# Show the first two records
+df_rank.head(2)
 ```
 
 ### Filter the dataframe for rank=1 records
@@ -203,7 +213,8 @@ df_filtered = pandasql.sqldf("""
     where rnk=1
 """)
 
-df_filtered.head()
+# Show the first two records
+df_filtered.head(2)
 ```
 
 ### Finalize data for plotting
@@ -240,13 +251,16 @@ df_plot_data.tail()
 
 ```{python}
 alt.Chart(df_plot_data).mark_bar().encode(
-    x = alt.X(x_axis_name, 
-              axis = alt.Axis(labelOverlap='greedy')),
+    x = alt.X(
+        x_axis_name, 
+        axis = alt.Axis(labelOverlap='greedy')),
     y = y_axis_name,
+    tooltip=(x_axis_name, y_axis_name)
 ).properties(
     title = f"{ticker} - {y_axis_name}",
-    width = 300,
+    width = 400,
     height = 200
 )
 ```
+
 
