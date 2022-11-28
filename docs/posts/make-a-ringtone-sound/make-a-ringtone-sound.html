@@ -7,7 +7,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
 <meta name="author" content="Scott Wied">
-<meta name="dcterms.date" content="2022-11-09">
+<meta name="dcterms.date" content="2022-11-28">
 <meta name="description" content="The old US ringtone is the combination of two frequencies (440 and 480 Hz). This notebook shows how to create the audio for this ringtone.">
 
 <title>Scott’s Data Science Blog - Play the audio for the old US ringtone</title>
@@ -232,7 +232,7 @@ gtag('config', 'G-ZZ12P3MMWN', { 'anonymize_ip': true});
       <div>
       <div class="quarto-title-meta-heading">Published</div>
       <div class="quarto-title-meta-contents">
-        <p class="date">November 9, 2022</p>
+        <p class="date">November 28, 2022</p>
       </div>
     </div>
     
@@ -258,7 +258,7 @@ gtag('config', 'G-ZZ12P3MMWN', { 'anonymize_ip': true});
   </ul></li>
   <li><a href="#recreate-the-us-ringtone" id="toc-recreate-the-us-ringtone" class="nav-link" data-scroll-target="#recreate-the-us-ringtone"><span class="toc-section-number">3</span>  Recreate the US ringtone</a>
   <ul class="collapse">
-  <li><a href="#acustic-equations" id="toc-acustic-equations" class="nav-link" data-scroll-target="#acustic-equations"><span class="toc-section-number">3.1</span>  Acustic Equations</a></li>
+  <li><a href="#acoustic-equations" id="toc-acoustic-equations" class="nav-link" data-scroll-target="#acoustic-equations"><span class="toc-section-number">3.1</span>  Acoustic Equations</a></li>
   <li><a href="#plot-the-superpositioned-waveforms-on-a-graph" id="toc-plot-the-superpositioned-waveforms-on-a-graph" class="nav-link" data-scroll-target="#plot-the-superpositioned-waveforms-on-a-graph"><span class="toc-section-number">3.2</span>  Plot the superpositioned waveforms on a graph</a></li>
   <li><a href="#convert-sympy-equations-to-numeric-lists" id="toc-convert-sympy-equations-to-numeric-lists" class="nav-link" data-scroll-target="#convert-sympy-equations-to-numeric-lists"><span class="toc-section-number">3.3</span>  Convert Sympy equations to numeric lists</a></li>
   <li><a href="#play-the-ringtone-sound" id="toc-play-the-ringtone-sound" class="nav-link" data-scroll-target="#play-the-ringtone-sound"><span class="toc-section-number">3.4</span>  Play the ringtone sound</a></li>
@@ -437,8 +437,8 @@ y_at_480_hz = sin(960*pi*t)</code></pre>
 <section id="recreate-the-us-ringtone" class="level2" data-number="3">
 <h2 data-number="3" class="anchored" data-anchor-id="recreate-the-us-ringtone"><span class="header-section-number">3</span> Recreate the US ringtone</h2>
 <p>In the United States, the ringtone has historically been a two second tone composed of the frequencies 440 Hz and 480 Hz. The tone is followed by a four second pause, and then repeated until the call is answered.</p>
-<section id="acustic-equations" class="level3" data-number="3.1">
-<h3 data-number="3.1" class="anchored" data-anchor-id="acustic-equations"><span class="header-section-number">3.1</span> Acustic Equations</h3>
+<section id="acoustic-equations" class="level3" data-number="3.1">
+<h3 data-number="3.1" class="anchored" data-anchor-id="acoustic-equations"><span class="header-section-number">3.1</span> Acoustic Equations</h3>
 <p>When multiple sound waves overlap, their amplitudes add together. This is called <a href="https://en.wikipedia.org/wiki/Superposition_principle">superposition</a>.</p>
 <p><span class="math inline">\(y_{super}(t) =  sin  \left({  2 \pi f_1 t  }\right)  +  sin  \left({  2 \pi f_2 t  }\right)\)</span></p>
 <p>Where, the <a href="https://en.wikipedia.org/wiki/Beat_(acoustics)">beat frequency</a> (<span class="math inline">\(f_{beat}\)</span>) is defined as</p>
