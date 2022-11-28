@@ -2,7 +2,7 @@
 title: Play the audio for the old US ringtone
 description: The old US ringtone is the combination of two frequencies (440 and 480 Hz).  This notebook shows how to create the audio for this ringtone.
 author: Scott Wied
-date: 11/09/2022
+date: 11/28/2022
 categories:
   - Sympy
   - Audio
@@ -174,7 +174,7 @@ Audio(ts_480, rate=f_480*n)
 
 In the United States, the ringtone has historically been a two second tone composed of the frequencies 440 Hz and 480 Hz. The tone is followed by a four second pause, and then repeated until the call is answered.
 
-### Acustic Equations
+### Acoustic Equations
 
 When multiple sound waves overlap, their amplitudes add together. This is called [superposition](https://en.wikipedia.org/wiki/Superposition_principle).
 
