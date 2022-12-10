@@ -1,0 +1,50 @@
+---
+jupyter: python3
+---
+
+```{python}
+import ipywidgets as widgets
+from ipywidgets import interact
+import pandas as pd
+import altair as alt
+import matplotlib.pyplot as plt
+```
+
+```{python}
+df_pulls = pd.DataFrame({
+    "button_name": ['Red', 'Blue', "Green"],
+    "number_of_pulls": [0,0,0],
+    "number_of_wins" : [0,0,0]}).set_index("button_name")
+df_pulls
+```
+
+```{python}
+red_button = widgets.Button(description='Red')
+blue_button = widgets.Button(description='Blue')
+green_button = widgets.Button(description='Green')
+
+buttons = widgets.HBox([red_button, blue_button, green_button])
+buttons
+out = widgets.Output(layout = widgets.Layout(height='300px'))
+
+def plot_pulls(btn):
+    with out:
+        button_name = btn.description
+        df_pulls.loc[button_name]['number_of_pulls']+=1
+        df_pulls.plot.bar(y='number_of_pulls')
+        out.clear_output()
+        plt.show()
+        
+
+red_button.on_click(plot_pulls)
+blue_button.on_click(plot_pulls)
+green_button.on_click(plot_pulls)
+
+# widgets.interact(plot_list, arm=pulls)
+
+display(buttons)
+display(out)
+# buttons.on_displayed(print("Hello"))
+```
+
+

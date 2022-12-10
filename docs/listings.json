@@ -2,6 +2,7 @@
   {
     "listing": "/index.html",
     "items": [
+      "/posts/muti-armed-bandit/multi-armed-bandit-game.html",
       "/posts/make-a-ringtone-sound/make-a-ringtone-sound.html",
       "/posts/company-financial-trends/company-financial-trends.html"
     ]
@@ -12,6 +13,10 @@
   },
   {
     "listing": "/posts/make-a-ringtone-sound/make-a-ringtone-sound.html",
+    "items": []
+  },
+  {
+    "listing": "/posts/muti-armed-bandit/multi-armed-bandit-game.html",
     "items": []
   }
 ]

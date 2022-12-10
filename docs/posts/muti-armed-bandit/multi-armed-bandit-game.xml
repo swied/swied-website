@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<rss  xmlns:atom="http://www.w3.org/2005/Atom" 
+      xmlns:media="http://search.yahoo.com/mrss/" 
+      xmlns:content="http://purl.org/rss/1.0/modules/content/" 
+      xmlns:dc="http://purl.org/dc/elements/1.1/" 
+      version="2.0">
+<channel>
+<title>Scott&#39;s Data Science Blog</title>
+<link>htts://www.swied.com/posts/muti-armed-bandit/multi-armed-bandit-game.html</link>
+<atom:link href="htts://www.swied.com/posts/muti-armed-bandit/multi-armed-bandit-game.xml" rel="self" type="application/rss+xml"/>
+<description></description>
+<generator>quarto-1.2.258</generator>
+<lastBuildDate>Wed, 07 Dec 2022 19:20:30 GMT</lastBuildDate>
+</channel>
+</rss>
