@@ -1,0 +1,30 @@
+conda create -n ds1 python=3.10 pip
+conda activate ds1
+conda install pandas numpy matplotlib 
+conda install jupyterlab nb_conda_kernels ipywidgets
+conda install -c plotly plotly_express
+conda install seaborn altair bokeh pyviz holoviews
+conda install seaborn altair bokeh holoviews
+conda install openjdk
+conda install -c conda-forge jaydebeapi
+conda install -c anaconda cudatoolkit
+conda install -c anaconda cudnn
+conda install -c conda-forge delta-spark pyarrow
+conda install -c conda-forge prophet pyod dowhy
+conda install pytorch torchvision torchaudio pytorch-cuda=11.8 -c pytorch -c nvidia
+conda install -c conda-forge spacy
+conda install -c conda-forge cupy
+conda install -c conda-forge dautilpy
+conda install -c conda-forge datasets
+conda install -c conda-forge sentencepiece
+conda install -c conda-forge sacremoses
+conda install -c conda-forge sacrebleu
+conda install -c conda-forge umap-learn
+conda install -c conda-forge huggingface_hub
+pip install bertviz
+conda install -c conda-forge seqeval
+conda install -c anaconda nltk
+conda install -c conda-forge protobuf
+conda install -c anaconda absl-py
+conda install -c conda-forge rouge-score
+
